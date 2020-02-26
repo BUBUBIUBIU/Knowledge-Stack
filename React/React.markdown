@@ -1,4 +1,9 @@
 ### state&props
+### React Element vs React Component
+React element is a different concept to component. Actually, it is a return value of component.  
+The form of element is object. And the type property determine which DOM element it will be convert to.
+For them, the creation code is different. For element (DOM component) is React.creatElement. For component (composite 
+component) is React.creatComponent.  
 ### stateless&stateful
 ### life cycle
 #### Constructor

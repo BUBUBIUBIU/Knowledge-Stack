@@ -1,16 +1,16 @@
 ### Browser
 #### prerequisite
 ##### Thread vs Process
-A process can have many threads. Different threads of the same process share resource (memory, CPU). Process is CPU分配资源的
-最小单位（能拥有和独立运行资源的最小单位）。线程是CPU调度的最小单位（线程是建立在进程基础上的一次程序运行单位）。
+A process can have many threads. Different threads of the same process share resource (memory, CPU). Process is the smallest
+unit CPU allocate resource for (CPU分配资源的最小单位, 能拥有和独立运行资源的最小单位）。Thread is the smallest unit that OS schedule CPU for. (线程是CPU调度的最小单位, 线程是建立在进程基础上的一次程序运行单位)
 #### About browser
 Browser has multiple processes. And OS allocate resource (CPU, memory) to it. There are some core processes.
 #### Browser process (main process)
-It is responsible for create or end a process. 网络资源管理，下载等。
+It is responsible for create or end a process. Moreover, manage network resource, download (网络资源管理，下载等)。
 #### Plugin process
-每种插件对于一个进程。
+Browser create a process for each plugins (每种插件对于一个进程)。
 #### GPU process
-It is responsible for 3D paint.
+It is responsible for 3D paint/render.
 #### 浏览器内核/浏览器渲染进程/renderer process
 This is the most frequent process developer interacts with. It is responsible for rendering page, JS execution, event loop.
 It is a multi thread process. There are some core thread.

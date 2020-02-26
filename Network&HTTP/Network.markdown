@@ -34,9 +34,12 @@ IP主要解决网络路由和寻址问题；TCP主要解决如何在IP层上安�
 #### 请求行
 请求方法:GET，PUT，DELETE; URL:协议+主机+路径+参数; 版本协议
 #### 状态行
-状态码（200，304，404）；版本协议；状态信息
+状态码（200，301，304，404）；版本协议；状态信息
 #### 请求头/响应头
-键值对形式
+键值对形式.  
+Connection: keep-alive.  
+Expires/Cache-Control（强缓存）  
+If-Modified-Since/Last-Modified，If-None-Match/Etag
 #### 请求体/响应体
 三种请求体；响应体一种(HTTP文件)
 ### client怎么确定自己发送的消息被server收到
