@@ -1,3 +1,6 @@
+## Why React
+ReactJS makes a front-end system modular. So that system is easy to reuse, maintain and expand. It focus on the View layer
+and it has functional component which is more appropriate for test.
 ### state&props
 ### React Element vs React Component
 React element is a different concept to component. Actually, it is a return value of component.  

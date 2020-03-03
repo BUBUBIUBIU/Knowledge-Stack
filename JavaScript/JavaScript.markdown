@@ -11,14 +11,14 @@ Scope chain of a function points to a stack including itself and its parent func
 #### Closure
 闭包就是能访问另一个函数作用域中变量的函数。Scope chain is destroyed, but not VO.  
 Features: data privacy, avoid mess data, cost memory.  
-Example: The third argument of setTimeout method. Time count function. Debounce. Throttle.
+Example: The third argument of setTimeout method. Time (次数) count function. Debounce. Throttle.
 ### 'this' variable
 In general function, 'this' variable points to global object.  
 'this' variable in arrow function points to parent function.
 ### Callback function (anonymous function)
 ## DOM & DOM operation
 .getElementById() .querySelector(class name) .querySelectorAll() getElementsByTagName()  
-.addEventListener('action', func) .removeEventListener()  
+.addEventListener('action', func, boolean) .removeEventListener()  
 .innerHTML .classList.add .insertAdjacentHTML e.target.closest .getAttribute 
 ### 缩小DOM object抓取的范围
 一般我们会用document来调用抓取element的方法，这其实是在全局抓取。但是我们可以以其他object来缩小抓取的范围。
@@ -44,24 +44,20 @@ Record difference between nodes.
 抓取input field里的值，清空input field里的值
 ## Class
 ### Prototype & Inheritance
-Example. Class A is inherited from class B. Then, A.proto === B.prototype.  
+Example. Class A is inherited from class B. Then, A.proto === B.prototype. This equation describes both instantiation
+and inheritance. More detailed example (Person and Athlete) is in JS course.  
 Methods and properties in prototype can be shared by instances. 
 ## Promise
 catch then Promise.all() Promise.race Promise.resolve() Promise.reject()
-
 ## Async/Await
-Async function always automatically returns a promise, then the promise will automatically be resolved with returned value.
-
-If there is no any await in async function, it executes at once then returns a promise object. Actually,
+- Async function always automatically returns a promise, then the promise will automatically be resolved with returned value.
+- If there is no any await in async function, it executes at once then returns a promise object. Actually,
 async function executes at once after it is called.
-
-We can first define async function. It does not execute at once like instantiation of Promise.
+- We can first define async function. It does not execute at once like instantiation of Promise.
 It needs calling to execute.
-
-The result Await returns is different with Promise or then method. It can return both values and promise.
+- The result Await returns is different with Promise or then method. It can return both values and promise.
 If result is promise, The return value on left side of equal sign is the arguments of resolve method.
-
-When will the async function get stuck? If there is an await expression, it will stop and wait for resolve.
+- When will the async function get stuck? If there is an await expression, it will stop and wait for resolve.
 The code after this await expression will be put into micro-task queue.
 ## JS运行机制/宏任务与微任务/
 ### 宏任务
