@@ -1,3 +1,20 @@
+## Heap memory vs Stack memory
+For stack, we release variables and collect memory after a execution context ends. But for heap, we release it when no
+one refers to it.
+### Stack
+- First in last out. For primitive data type. Since size of primitive type are small and constant, and they are often accessed.
+- But for closure, primitive type is stored in heap. 现在的 JS 引擎可以通过逃逸分析辨别出哪些变量需要存储在堆上，哪些需要存储在栈上。
+### Heap
+- Tree shape. Content of reference data type (Array, Function, Object). It allocates memory dynamically. Since size of reference type are big and floating.
+If it is in stack, it will impact performance.
+- There is a pointer in stack for reference type. It points the content of reference type in heap.
+## Deep copy vs Shallow copy
+### Assignment 
+Just points to the original object.
+### Shallow copy
+Shallow copy creates a new object. But for reference date type of original object, it still refer to.
+### Deep copy
+We have to create a totally different object. And for all sub objects do the same thing. 
 ## Type coercion
 ### == & ===
 ### < > <= >=
@@ -46,9 +63,18 @@ Record difference between nodes.
 ### Prototype & Inheritance
 Example. Class A is inherited from class B. Then, A.proto === B.prototype. This equation describes both instantiation
 and inheritance. More detailed example (Person and Athlete) is in JS course.  
-Methods and properties in prototype can be shared by instances. 
+Methods and properties in prototype can be shared by instances.
 ## Promise
-catch then Promise.all() Promise.race Promise.resolve() Promise.reject()
+catch then Promise.all() Promise.race Promise.resolve() Promise.reject()  
+Why do developers use promise via function form?  
+### then
+value -> a resolved promise object with argument  
+without return -> a resolved promise object with undefined as argument  
+resolved promise object -> a resolved promise object, argument in returned promise will be used as argument for next then
+### catch
+syntax sugar
+### Promise.resolve()
+Promise.resolve(123) -> a resolved promise object with argument value 123
 ## Async/Await
 - Async function always automatically returns a promise, then the promise will automatically be resolved with returned value.
 - If there is no any await in async function, it executes at once then returns a promise object. Actually,
@@ -57,9 +83,13 @@ async function executes at once after it is called.
 It needs calling to execute.
 - The result Await returns is different with Promise or then method. It can return both values and promise.
 If result is promise, The return value on left side of equal sign is the arguments of resolve method.
-- When will the async function get stuck? If there is an await expression, it will stop and wait for resolve.
-The code after this await expression will be put into micro-task queue.
-## JS运行机制/宏任务与微任务/
+- When will the async function get stuck? If there is an await expression (whatever it returns, promise object or value),
+it will stop and wait for resolve. The code after this await expression will be put into micro-task queue.
+## JS运行机制 & 宏任务与微任务
+JS is single-thread. At any time, it can only execute a piece of code in file. Based on my experience, two sorts of action
+such as HTTP request and time action can be executed in parallel. If we wanna execute a task with huge calculation, we should
+consider web worker.  
+由setTimeout, 事件触发等调用的的函数，会触发新一轮的事件循环并且独立执行他自己的宏任务微任务。而不是两个宏任务先一起执行，再一起他们的微任务。
 ### 宏任务
 setTimeout, setInterval, 由事件触发的函数
 ### 微任务
@@ -73,7 +103,15 @@ process.nextTick, then
 #### 问题：循环引用
 解决方法，显示地将指针设为null。
 ### 标记-清除法
-从根对象出发，找到所有从根开始引用的对象，然后再找这些对象引用的对象。
-从根开始，垃圾回收器将找到所有可以获得的对象和收集所有不能获得的对象。
+- First garbage collector will mark all variables in memory. 
+- Second, it will remove all marks in variables which root object (alive object) can reach.
+- Third, clear all marked variable and deallocate memory.
 #### 循环引用不再是问题
 0引用对象总是不可获得的，这句话反过来不一定对。对于循环引用，函数调用返回后，两个对象从全局对象（根对象）出发无法获取，因此他们会被GC回收。
+### Common memory leak cases
+- Extra global variable
+- Forgetting to deallocate timer (setTimeout)
+- Closure
+- DOM的应用 (这个没什么遇到)
+
+  
