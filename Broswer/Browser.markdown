@@ -2,7 +2,8 @@
 #### prerequisite
 ##### Thread vs Process
 A process can have many threads. Different threads of the same process share resource (memory, CPU). Process is the smallest
-unit CPU allocate resource for (CPU分配资源的最小单位, 能拥有和独立运行资源的最小单位）。Thread is the smallest unit that OS schedule CPU for. (线程是CPU调度的最小单位, 线程是建立在进程基础上的一次程序运行单位)
+unit CPU allocate resource for (CPU分配资源的最小单位, 能拥有和独立运行资源的最小单位）。Thread is the smallest unit that OS
+schedule CPU for. (线程是CPU调度和分派的最小单位, 线程是建立在进程基础上的一次程序运行单位)
 #### About browser
 Browser has multiple processes. And OS allocate resource (CPU, memory) to it. There are some core processes.
 #### Browser process (main process)
@@ -13,20 +14,20 @@ Browser create a process for each plugins (每种插件对于一个进程)。
 It is responsible for 3D paint/render.
 #### 浏览器内核/浏览器渲染进程/renderer process
 This is the most frequent process developer interacts with. It is responsible for rendering page, JS execution, event loop.
-It is a multi thread process. There are some core thread.
+It is a multi-thread process. There are some core thread.
 ##### GUI rendering thread
-It renders browser UI, parses HTML, CSS. Then builds DOM tree. 布局和绘制。回流？该线程和JS引擎线程是互斥的。当JS引擎线程执行时，GUI线程
+It renders browser UI, parses HTML, CSS. Then builds DOM tree. 管理布局，绘制和回流。该线程和JS引擎线程是互斥的。当JS引擎线程执行时，GUI线程
 会被挂起。GUI更新会被保存在一个队列中等到JS引擎空闲时被立即执行。
 ##### JS engine thread (JS引擎线程)
 负责解析和运行JS代码。其一直等待着任务队列中的任务到来，然后加以处理。一个Tab页（render进程）中无论什么时候都只有一个JS线程在运行JS程序。由于JS引擎线程
 和GUI渲染线程是互斥的，如果JS执行时间过长，会导致页面渲染不连贯甚至阻塞。
 ##### 事件触发线程 & 定时触发器线程 & 异步HTTP请求线程
 #### 浏览器多进程优势
-避免单个page crash影响整个浏览器；避免第三方插件crash影响浏览器；多进程充分利用多核优势，提高效能；方便使用沙河模型隔离插件等进程，提高稳定性。
+避免单个page crash影响整个浏览器；避免第三方插件crash影响浏览器；多进程充分利用多核优势，提高效能；方便使用沙盒模型隔离插件等进程，提高稳定性。
 #### Browser进程和浏览器内核之间的通信
 Browser进程收到用户请求，首先需要获取页面内容（比如通过网络下载资源），随后通过 RendererHost 接口传递给 Renderer process. Render进程的render
 接口接收到消息，简单处理后，交给渲染线程。渲染线程（GUI rendering thread）在加载和渲染网页时，可能会需要Browser进程获取资源或GPU线程来帮助渲染。
-中途可能会有JS线程操作DOM，造成回流？和重绘。最后renderer进程将结果发送给browser进程，browser进程接收到结果并将结果绘制出来。
+中途可能会有JS线程操作DOM，造成回流和重绘。最后renderer进程将结果发送给browser进程，browser进程接收到结果并将结果绘制出来。
 ### Browser cache
 - For browser cache, we avoid causing cache when we develop app. But after we released web app, we have to think how to
 manage it, so that accelerate accessing speed.  
@@ -68,3 +69,21 @@ If-None-Match的request header里，如果服务器端检查到match的话，就
 ### CDN(content distributed network)
 一般开发人员口中的缓存指的是两个东西，一是浏览器里的缓存，二是CDN里的缓存。  
 CDN是用户和服务器之间的一个cache层。主要动作为推送（由源服务器）和拉取（由浏览器发送要求）
+### Reflow & Repaint
+- Browser applies flow based layout
+- Render tree = DOM tree of HTML + DOM tree of CSS
+- 回流必将引起重绘，重绘不一定会引起回流
+#### Reflow
+- 当Render Tree中部分或全部元素的尺寸、结构、或某些属性发生改变时，浏览器重新渲染部分或全部文档的过程称为回流。
+- 会导致reflow的操作：页面首次渲染，浏览器窗口大小改变，元素内容以及字体大小改变，添加或删除DOM元素，获取某些属性等
+#### Repaint
+- 当页面中元素样式的改变并不影响它在文档流中的位置和尺寸时（例如：color、background-color、visibility等），浏览器会将新样式赋予给元素并重新绘制它，
+这个过程称为重绘。
+#### Reflow vs Repaint
+- Reflow costs more than repaint. Since sometimes, only reflow one element will cause parent element and child element reflow.
+#### How to avoid reflow them
+- 避免频繁读取引发的重绘和回流，用一个变量缓存到读取的DOM元素
+- 对有复杂动画的元素使用绝对定位(position: absolute or fixed)
+- 可以先把要修改CSS style的元素设为display: none，这样后续的在元素上的操作就不会回流和重绘
+### History management
+Details in front-end router file.
