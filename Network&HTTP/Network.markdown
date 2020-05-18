@@ -10,7 +10,7 @@
 ### 浏览器对页面进行渲染并呈现给用户
 ### TCP四次挥手（断开连接）
 ## TCP三次握手
-Client: ACK=0, SYN=1, seq=x (x is random); 
+Client: ACK=0, SYN=1, seq=x (x is random);
 Server: ACK=1, SYN=1, seq=y, ack = x+1 (y is random);
 Client: ACK=1, seq=x+1, ack=y+1;
 ### 为什么三次
@@ -34,7 +34,13 @@ IP主要解决网络路由和寻址问题；TCP主要解决如何在IP层上安�
 SOAP专注于某些应用逻辑；如果说某些服务（银行转账）需要ACID事物的话，你就得用SOAP了。Restful则面向数据，且无状态。
 ### HTTP报文格式
 #### 请求行
-请求方法:GET，PUT，DELETE; URL:协议+主机+路径+参数; 版本协议  
+请求方法:GET，PUT，DELETE; URL:协议+主机+路径+参数; 版本协议
+##### 请求方法
+- 安全性。GET，HEAD方法仅仅query资源而不执行动作，所以这些方法是安全的。
+- 等幂性（Idempotent）。执行N次操作A同执行1次操作A的效果是一样的。说明该方法具有等幂性。如PUT，POST，DELETE。而OPTIONS不具有副作用，故具有内在
+等幂性。
+- Post vs Get: Get的参数在url里，而Post则是在消息体内；Get只能提交1024 bytes，Post可以2M；Get方法存在安全问题，因为它请求的数据会被浏览器
+保存下来，攻击者可以从历史记录读取这些数据；Post必须设置content-Type必须为application。
 #### Options
 This method is to:
 - get what methods such as GET POST are supported by a specific web site.
@@ -64,7 +70,7 @@ HTTP里，有请求就有响应，根据响应的状态码就能知道。
 - 短连接: 在HTTP1.0中，默认使用的是短连接。也就是说，浏览器和服务器每进行一次HTTP操作，就建立一次连接，完成操作后就中断。
 比如，浏览器访问的HTML文件中包含如JS，图片或CSS文件时，每遇到这样一个web资源，就要建立一个HTTP会话。
 - 长连接: 自HTTP1.1起，默认使用长连接。响应头的某个header里是这样：Connection: keep-alive.当一个网页打开完成后，TCP连接不会关闭。
-长连接节省建立连接的资源。降低拥塞控制。
+长连接节省建立连接的资源。降低拥塞控制（支持多次请求）。
 #### 服务器保活功能
 ## HTTPS
 - 端口：HTTP 80, HTTPS 443。
@@ -78,7 +84,10 @@ RSA等。
 ### 为了保证获得的证书是服务器而不是中间人的，我们还需要验证数字签名。
 - 数字签名（数字编号），解决证书被调包（篡改）的问题，即证书内容与所对应的服务器公钥不匹配。证书编号会用第三方机构的私钥加密。
 - 当第三方确认证书信息等于用公钥解密过的证书编号时，才能确认这个证书属于服务器而不是中间人（这个验证的第三方一般都在本地）。  
-- 整个流程是：客户端向服务器发送证书请求。收到相应的证书后和第三方机构确认证书真伪。如果是真的则开始使用公钥。SSL/TSL所干的活。
+- 整个流程是：客户端向服务器发送证书请求。收到相应的证书后和第三方机构确认证书真伪。如果是真的则开始使用公钥。
+### SSL/TSL运行机制
+- 基本思路是公钥加密法
+- 握手阶段，4次发送，3个随机数
 ### Convention of HTTP to HTTPS
 #### First, application of certificate
 I have to make a CSR (certificate signing request) file, which includes my personal information, address.
@@ -130,6 +139,15 @@ CSRF; DOM查询 iframe, 域名相似
 - Host property means server B. Origin property means server A.
 #### Not so simple request
 - Browser will send a OPTIONS request beforehand. 'Access-Control-Request-Method' declare what method applied.
-- Server B will check the 'origin', 'Access-Control-Request-Method' and 'Access-Control-Request-Headers' property in preflight.
+- Server B will check the 'origin', 'Access-Control-Request-Method' and 'Access-Control-Request-Headers' property in preflight (if success return 200).
 - After server A passed preflight, it can send request with only 'origin' property and server B only return 'Access-Control-Allow-Origin'.
 ## Cookie
+## MAC
+- 机器之间是通过都是通过网卡进行传输数据的，计算机之间的连接就相当于网卡之间的连接
+- 网卡上的地址是独一无二的，用来标识自己全球唯一的身份
+- 48位
+## 内网访问外网&外网访问内网
+### 内到外
+找一台和内网服务器在同一级路由下的连通外网的机器，设置这台机器（如Linux中的/etc/environment的proxy），让这台机器的http和https都走一遍特定的端口。
+### 原理：端口映射
+子网转换
