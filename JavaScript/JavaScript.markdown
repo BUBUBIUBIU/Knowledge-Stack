@@ -8,17 +8,40 @@ one refers to it.
 - Tree shape. Content of reference data type (Array, Function, Object). It allocates memory dynamically. Since size of reference type are big and floating.
 If it is in stack, it will impact performance.
 - There is a pointer in stack for reference type. It points the content of reference type in heap.
+## TDZ(Temporal Dead Zone)
+对于let和const这两个没有变量提升效果的关键字。在一个封闭的块级区域内，在声明这些变量前的区域都是暂时死区（使用了会报错）。
+## Symbol
+### When will we need it
+- For example, when you are using a object offered by others, you want to add a method with same name for this object. The
+conflict happens. So we need something to make sure that properties of the object are different.
+- Eliminating magic string. 强耦合例子.
+### How to apply Symbol
+- We can set key of object to Symbol. So that naming keys will not make conflict.
+- Symbol.iterator的例子。iterator是ES6为Symbol提供的内置值。他，在可迭代对象中，指向一个function能返回一个迭代器
+（所以可能这个function是生成器喽）。换句话说就是对象可以像String，Array那样通过迭代器遍历。
+### Others
+Symbol作为属性名不会被for...in遍历到
 ## Deep copy vs Shallow copy
 ### Assignment 
 Just points to the original object.
 ### Shallow copy
 Shallow copy creates a new object. But for reference date type of original object, it still refer to.
 ### Deep copy
-We have to create a totally different object. And for all sub objects do the same thing. 
+We have to create a totally different object. And for all sub objects do the same thing.
 ## Type coercion
-### == & ===
+### == & === & Set class
+- For Set object, NaN === NaN
+- For ===, it will compare value and type. For ==, it will first do type coercion then compare.
 ### < > <= >=
 Except +, all strings will be coerced to number.
+## 原生类型构造（包装）器
+Number(), Boolean(), String()...
+### 内部 [[Class]]
+typeof 的结果为 "object" 的值（比如数组）被额外地打上了一个内部的标签属性 [[Class]]
+### Boxing
+为了访问.length（如一个string primitive的.length）或使用toString()这样的方法，JS通常会自动封装（boxing）基本类型来满足这个要求。
+### Unboxing
+当我们想访问被包装器包装好的对象的基本类型时，可以使用valueOf方法。有的时候开箱也会隐式地发生。
 ## How JS work behind tha scenes
 Once a function is called, an execution context is created. Execution context has 3 things.  
 ### Variable Object  
@@ -30,43 +53,23 @@ Scope chain of a function points to a stack including itself and its parent func
 Features: data privacy, avoid mess data, cost memory.  
 Example: The third argument of setTimeout method. Time (次数) count function. Debounce. Throttle.
 ### 'this' variable
-In general function, 'this' variable points to global object.  
-'this' variable in arrow function points to parent function.
+- In general function, 'this' variable points to global object. Which object call 'this', 'this' key word points to the obj.
+- There are some differences between NodeJS and browser environment. 快手题中的变量在Node环境下不会挂在global object里。而是到
+module上。In browser, all things normal.
+- 'this' variable in arrow function points to parent function. 不是被call的位置的parent function，而是声明的位置的。
+#### Double equal signs in one expression
+造成内存泄漏
 ### Callback function (anonymous function)
-## DOM & DOM operation
-.getElementById() .querySelector(class name) .querySelectorAll() getElementsByTagName()  
-.addEventListener('action', func, boolean) .removeEventListener()  
-.innerHTML .classList.add .insertAdjacentHTML e.target.closest .getAttribute 
-### 缩小DOM object抓取的范围
-一般我们会用document来调用抓取element的方法，这其实是在全局抓取。但是我们可以以其他object来缩小抓取的范围。
-比如你可以get到一个DOM element并把它赋值给一个变量，然后你就拿它当成handler来get它的子DOM元素。
-### 捕获/冒泡
-First catch then bubble. When event arrive at target, order of code decides.
-### Event delegate
-Bind event to parent of target element, so that the number of event registration reduces, save memory.
-And we can add event to child element dynamically. 
-### currentTarget vs target
-currentTarget points the listener, target points the actual touched element.
-### Event level
-DOM0: onClick
-DOM2: addEventListener
-DOM3: customized event
-### DOM vs Virtual DOM
-The element of DOM is huge and operation for it consumes much. So we use JS to simulate DOM.
-For example, a DOM element can be represented by JS object including name, tag, key.
-### Diff Algorithm
-Comparison of two DOM tree (new virtual DOM tree and old one).
-Record difference between nodes. 
-### 几种操作
-抓取input field里的值，清空input field里的值
 ## Class
 ### Prototype & Inheritance
 Example. Class A is inherited from class B. Then, A.proto === B.prototype. This equation describes both instantiation
 and inheritance. More detailed example (Person and Athlete) is in JS course.  
 Methods and properties in prototype can be shared by instances.
 ## Promise
-catch then Promise.all() Promise.race Promise.resolve() Promise.reject()  
-Why do developers use promise via function form?  
+- 在Promise对象实例化的过程中，我们需要投入一个带有两个参数的function来实例化这个promise。注意，这个function和他的参数只是一种形式（resolve和
+reject都是在promise的constructor里被定死的），和then中执行的resolved方法有本质性的区别。
+- catch then Promise.all() Promise.race Promise.resolve() Promise.reject() Promise.allSettled()
+- Why do developers use promise via function form?  
 ### then
 value -> a resolved promise object with argument  
 without return -> a resolved promise object with undefined as argument  

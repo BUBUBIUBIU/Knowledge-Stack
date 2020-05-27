@@ -1,9 +1,6 @@
 ### Browser
 #### prerequisite
-##### Thread vs Process
-A process can have many threads. Different threads of the same process share resource (memory, CPU). Process is the smallest
-unit CPU allocate resource for (CPU分配资源的最小单位, 能拥有和独立运行资源的最小单位）。Thread is the smallest unit that OS
-schedule CPU for. (线程是CPU调度和分派的最小单位, 线程是建立在进程基础上的一次程序运行单位)
+详情请参考进程与线程文档
 #### About browser
 Browser has multiple processes. And OS allocate resource (CPU, memory) to it. There are some core processes.
 #### Browser process (main process)
@@ -44,6 +41,7 @@ data including header. When browser request this data, it will go to cache and c
 强缓存, when browser is loading data, the header of Expires will be updated.  
 - Cache-Control. 服务器与客户端时间不一致带来的问题，Cache-control 存的是相对时间。客户端拿第一次请求的时间加上Cache-Control的值，再与当前时间
 做对比来判断资源是否过期。同理没有命中重新download资源时，Cache-Control会被更新。Cache-Control的优先级高于Expires。
+- Cache-Control: no-cache/no-store. no-store表示彻底禁用缓存（包括本地和代理服务器）。no-cache则是可以缓存，但是要经过服务器验证。即不缓存过期资源。
 ##### 怎么启用强缓存
 用代码的话两种方式；用应用的话tomcat，Nginx可配置
 ##### 不想启用强缓存怎么办

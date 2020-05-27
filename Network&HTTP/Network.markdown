@@ -37,7 +37,7 @@ SOAP专注于某些应用逻辑；如果说某些服务（银行转账）需要A
 请求方法:GET，PUT，DELETE; URL:协议+主机+路径+参数; 版本协议
 ##### 请求方法
 - 安全性。GET，HEAD方法仅仅query资源而不执行动作，所以这些方法是安全的。
-- 等幂性（Idempotent）。执行N次操作A同执行1次操作A的效果是一样的。说明该方法具有等幂性。如PUT，POST，DELETE。而OPTIONS不具有副作用，故具有内在
+- 幂等性（Idempotent）。执行N次操作A同执行1次操作A的效果是一样的。说明该方法具有等幂性。如PUT，DELETE。而OPTIONS不具有副作用，故具有内在
 等幂性。
 - Post vs Get: Get的参数在url里，而Post则是在消息体内；Get只能提交1024 bytes，Post可以2M；Get方法存在安全问题，因为它请求的数据会被浏览器
 保存下来，攻击者可以从历史记录读取这些数据；Post必须设置content-Type必须为application。
@@ -79,7 +79,7 @@ HTTP里，有请求就有响应，根据响应的状态码就能知道。
 使用随机数。
 ### 协商对称加密的过程使用非对称加密加密。
 RSA等。
-### 为了避免中间人攻击，客户端与服务器间不直接使用客户端的公钥，而是使用第三方机构发布的数字证书来获取服务器的公钥。
+### 为了避免中间人攻击，客户端与服务器间不直接使用服务器的公钥，而是使用第三方机构发布的数字证书来获取服务器的公钥。
 第三方机构用自己的私钥加密服务器的公钥，然后发送给我们（我们有第三方的公钥）。中间人无法使用自己的私钥来加密证书。
 ### 为了保证获得的证书是服务器而不是中间人的，我们还需要验证数字签名。
 - 数字签名（数字编号），解决证书被调包（篡改）的问题，即证书内容与所对应的服务器公钥不匹配。证书编号会用第三方机构的私钥加密。
@@ -141,7 +141,6 @@ CSRF; DOM查询 iframe, 域名相似
 - Browser will send a OPTIONS request beforehand. 'Access-Control-Request-Method' declare what method applied.
 - Server B will check the 'origin', 'Access-Control-Request-Method' and 'Access-Control-Request-Headers' property in preflight (if success return 200).
 - After server A passed preflight, it can send request with only 'origin' property and server B only return 'Access-Control-Allow-Origin'.
-## Cookie
 ## MAC
 - 机器之间是通过都是通过网卡进行传输数据的，计算机之间的连接就相当于网卡之间的连接
 - 网卡上的地址是独一无二的，用来标识自己全球唯一的身份
