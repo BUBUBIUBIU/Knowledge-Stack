@@ -10,7 +10,7 @@
 ### 浏览器对页面进行渲染并呈现给用户
 ### TCP四次挥手（断开连接）
 ## TCP三次握手
-Client: ACK=0, SYN=1, seq=x (x is random);
+Client: ACK(确认标志)=0, SYN(同步标志)=1, seq=x (x is random);
 Server: ACK=1, SYN=1, seq=y, ack = x+1 (y is random);
 Client: ACK=1, seq=x+1, ack=y+1;
 ### 为什么三次
@@ -26,7 +26,7 @@ Client: ACK=1, seq=u+1, ack=w+1
 ### TIME-WAIT = 2MSL
 time-wait是client在发送完最后一个确认报文的等待时间。等这么久有两个原因。一是怕server没收到自己发的最后一条信息，
 导致server再次发送一次第三条信息，而自己关闭连接了又接不到。二是确保本次对话（连接）中的所有报文都已经送达，或从网络中消失，
-使下一个对话不会出现上一个绘画的报文。
+使下一个对话不会出现上一个会话的报文。
 ## HTTP
 IP主要解决网络路由和寻址问题；TCP主要解决如何在IP层上安全稳定地传递数据包，并保障顺序；HTTP是基于前两者的一种无状态的协议
 （比如你当前打开的某个服务器的网页和你之前打开这个服务器上的网页没有任何联系）。
@@ -40,7 +40,7 @@ SOAP专注于某些应用逻辑；如果说某些服务（银行转账）需要A
 - 幂等性（Idempotent）。执行N次操作A同执行1次操作A的效果是一样的。说明该方法具有等幂性。如PUT，DELETE。而OPTIONS不具有副作用，故具有内在
 等幂性。
 - Post vs Get: Get的参数在url里，而Post则是在消息体内；Get只能提交1024 bytes，Post可以2M；Get方法存在安全问题，因为它请求的数据会被浏览器
-保存下来，攻击者可以从历史记录读取这些数据；Post必须设置content-Type必须为application。
+保存下来，攻击者可以从历史记录读取这些数据；Post必须设置content-Type为application。
 #### Options
 This method is to:
 - get what methods such as GET POST are supported by a specific web site.
@@ -102,7 +102,7 @@ Apply 301 redirection to make HTTP request to HTTPS (about Nginx configuration).
 client sends http requests to server. Then server replies a response with 301 redirection. Next, client parse new URL,
 make a new connection. 
 #### HSTS (HTTP Strict Transport Security)
-When user visit a web site. Usually, he does not input 'https://' in the address field but click some links and enter HTTPS from
+When a user visits a web site. Usually, he does not input 'https://' in the address field but click some links and enter HTTPS from
 HTTP via 301 redirection. With in this case, attacker can intercept and alter the request. Another case is that attacker can give
 user a dummy certificate, pretend to be server.  
 HSTS can force browser only send HTTPS request and prevent user to accept dummy certificate.
