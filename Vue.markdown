@@ -247,11 +247,12 @@ able to get rid of this compiler and we are shipping the finished code.
 - 不区分大小写的component selector，JS或CSS的preprocessor。
 ### Using the Vue CLI to create Projects
 - Vue loader，作用和webpack差不多。
-- Vue CLI
-
+- Vue CLI有几种不同的template，这里的template和之前Vue从HTML中得出来的template不是一个东西。最简单的就是simple的那个版本，也就是lecturer最早用的那种，
+只要一个index.html和从CDN引入Vue就行了。同样，也有webpack的template，就是显得更复杂。
+- 对于template compliation，除了simple的那个版本以外，其他workflow都支持。
 ### Installing the Vue CLI and Creating a new Project
 - 先通过NPM装Vue CLI
-- 可以通过Vue CLI建立一个Vue project，并指定 模式？
+- 可以通过Vue CLI建立一个Vue project，并指定workflow的模式。
 - 这时候我们建立出来的项目文件夹里只有简单的package.json, webpack配置文档等东西。我们需要用npm install来根据package.json把该打好的包都打好。
 - 打好了后，项目文件夹里大部分都是development dependencies，少量是webpack需要的东西。
 - 最后通过npm dev run来启动该项目的development server。即可以随时根据项目中内容的改变re-render的进程。
@@ -264,7 +265,11 @@ file的。因为它被存在memory里。
 - package.json. 其中有vue-loader，这是一个与single file template有关的loader。
 - webpack配置文件
 ### Understanding ".vue" Files
-- Single file template:  
+- Single file template: 不再借助el和template properties获得template。
+- 主要是三个file之间的互动。main.js中的实例指定挂载的点, 以及渲染方法。Vue.app是SFT。Vue 选项中的 render 函数若存在，则 Vue 构造函数不会从 
+template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模板编译渲染函数。
+- 当index.html被loaded时，main.js被执行。main.js里的vue实例的el property只起到挂载的作用而起不到inferring template的作用。
+- 在 vue.js实例里的 h function takes a template, a vuejs template to be rendered. h到底是啥？App就是Vue.app export出来的东西。
 
 
 
