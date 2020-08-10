@@ -1,7 +1,7 @@
 ## Section1
 ### Course Introduction
 - Vue.js is very small and lean without router or other modules.
-- Compared with React and Angular, Vuw is not only faster at loading time but also runtime.
+- Compared with React and Angular, Vue is not only faster at loading time but also runtime.
 - There are many modules for Vue.
 ### Let's Create our First VueJS Application
 - 教了怎么安装Vue，介绍了一个web编辑器，jsfiddle.net.
@@ -28,7 +28,7 @@ JS自己产生的)。所以我们只需要宣告一个method的对象参数就�
 - 这节解释的事Vue.js与HTML间的那层关系。
 - Vue.js并没有将Vue对象存在一个变量中。而是将他和被控制的HTML做一个connection。
 - 当检查网页的时候，我们可以在源码上看到，全是正常的HTML code。
-- 总得来说，Vue.js机遇HTML code制作了一个template。然后基于JS在这个temporary HTML上进行一顿操作。最后根据这个template生成真正的HTML。最后
+- 总得来说，Vue.js基于HTML code制作了一个template。然后基于JS在这个temporary HTML上进行一顿操作。最后根据这个template生成真正的HTML。最后
 浏览器根据真正的HTML render DOM。
 ### How the VueJS Template Syntax and Instance Work Together
 - 注意，在由HTML产生的template中，我们要call的method return回来的内容必须能被转换成string.
@@ -270,6 +270,39 @@ file的。因为它被存在memory里。
 template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模板编译渲染函数。
 - 当index.html被loaded时，main.js被执行。main.js里的vue实例的el property只起到挂载的作用而起不到inferring template的作用。
 - 在 vue.js实例里的 h function takes a template, a vuejs template to be rendered. h到底是啥？App就是Vue.app export出来的东西。
+- 一般情况下，Vue.app由三部分组成：template，script以及style。
+- 即使没有export内容，仅靠template也可以render。
+- render后，index.html中的挂载点会被覆盖。
+### Understanding the Object in the Vue File
+- export default那块就是实例化Vue instance的参数对应的部分。主要负责该 组件/instance 的逻辑部分。
+### How to Build your App for Production
+- 生成发布版本。
+### More about ".vue" Files and the CLI
+### Debugging VueJS Projects
+介绍了两个工具？再看看
+## Section 7
+### An Introduction to Components
+- 提了在HTML template里简单版的Vue instance复用行不通。只有第一个被挂载。
+- 第一个参数是选择器，第二个是Vue的实例，注意选择器名最好不要与第三方包冲突。
+- 由于component继承于Vue实例，如果我们直接用object的形式来定义data property，那会干涉其他的组件的data（这里再多研究一下？）。
+- 所以，仅在root vue instance使用object形式就行了。另一种使用data的方式，用function return应运而生。该function直接return一个object。
+### Storing Data in Components with the Data Method
+- 这节讲了组件如何被复用，且避免data sharing。Lecturer这里举的例子是 由一个组件产生的两个Vue实例 的data property同时指向一个object（即指针指向memory中相同的位置）。
+这种情况下，两个instance share一个data。这也是为什么每个Vue instance要以function的形式return一个独立的object的原因。以下是原文。
+- But now we're cheating because now returning the same data object and I mean the same, not content wise but actually the same place in memory in all instances of this component, so if we create the component twice as we do here, I actually do have two instances with the same data object.
+- 但是对methods，我们可以赋予一个object。因为在methods里，每个方法内部的this关键字都指向不同的 组件的 实例。
+### Registering Components Locally and Globally
+- Vue.componen这种写法通常是全局（本.vue file的全局）的写法。他会把整个页面template里的<my-cmp>都替换掉。
+- Locally的写法是，以变量的形式保存下来，放在特定的Vue instance的component property下，这样它的作用范围就可控了。
+### The "Root Component" in the App.vue File
+- 对于我们用vue-cli建立出来的项目形式，其实.vue file的东西就是render函数渲染的内容，也就是root component。
+- 注意<script>里是纯JS code，我们export出来的本质上是一个JS object。我们可以把他的selector看成放在main.js的el里。
+### Creating a Component
+- 注意在渲染的时候，我们必须要一个root component。
+### Using Components
+- Vue file的命名规则，首字母大写的驼峰命名法。
+
+
 
 
 
