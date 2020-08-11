@@ -301,6 +301,17 @@ template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模�
 - 注意在渲染的时候，我们必须要一个root component。
 ### Using Components
 - Vue file的命名规则，首字母大写的驼峰命名法。
+### Moving to a Better Folder Structure
+- 优雅地进行文件分类，根据不同的功能进行划分
+### How to Name your Component Tags (Selectors)
+- selector，在components中和在template中，既可以用驼峰命名法，也可以用dash。
+- 由于DOM是对大小写是不敏感的，所以我们一般对DOM用的都是dash命名法，而不是驼峰（在用el和template的时候特明显）。
+- VueJS帮助联动dash 命名法和驼峰命名法。所以我们在script里用驼峰，在template里用dash命名法。
+- 提到ES6的实例赋值特征。
+
+  
+
+  
 
 
 
