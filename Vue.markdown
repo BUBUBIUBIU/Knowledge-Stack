@@ -388,7 +388,7 @@ break。
 - 首先这个data property必须是一个array，然后我们在checkbox（input tag）上用v-model绑在同一个data property上，这样Vue就会自动帮我们追踪。
 ### Using Radio Buttons
 - 对于radio button，只要你用v-model把他们绑在同一个data property上，那么Vue就明白这组radio button里只能选一个。并且会切换到选中的值。
-### Handling Dropdowns with <select> and <option>
+### Handling Dropdowns with 'select' and 'option'
 - <option>可善用v-for铺开。<option>自带默认选项关键字selected，把对应的选项的selected设成true就行（如selected='...true的条件'）。
 - 我们依然用v-model来绑定data中相对应的property。要注意的是，如果该property已经有值了，那他会覆盖selected的默认选项（即这也是一种默认设置法）。
 ### What v-model does and How to Create a Custom Control
