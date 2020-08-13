@@ -289,11 +289,11 @@ template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模�
 ### Storing Data in Components with the Data Method
 - 这节讲了组件如何被复用，且避免data sharing。Lecturer这里举的例子是 由一个组件产生的两个Vue实例 的data property同时指向一个object（即指针指向memory中相同的位置）。
 这种情况下，两个instance share一个data。这也是为什么每个Vue instance要以function的形式return一个独立的object的原因。以下是原文。
-- But now we're cheating because now returning the same data object and I mean the same, not content wise but actually the same place in memory in all instances of this component, so if we create the component twice as we do here, I actually do have two instances with the same data object.
+- But now we're cheating because now returning the same data object and I mean the same, not content wise but actually the same place in memory in all instances  of this component, so if we create the component twice as we do here, I actually do have two instances with the same data object.
 - 但是对methods，我们可以赋予一个object。因为在methods里，每个方法内部的this关键字都指向不同的 组件的 实例。
 ### Registering Components Locally and Globally
 - Vue.componen这种写法通常是全局（本.vue file的全局）的写法。他会把整个页面template里的<my-cmp>都替换掉。
-- Locally的写法是，以变量的形式保存下来，放在特定的Vue instance的component property下，这样它的作用范围就可控了。
+- Locally的写法是，以变量的形式保存下来，放在特定的Vue instance的component property下，这样它的作用范围就可控了
 ### The "Root Component" in the App.vue File
 - 对于我们用vue-cli建立出来的项目形式，其实.vue file的东西就是render函数渲染的内容，也就是root component。
 - 注意<script>里是纯JS code，我们export出来的本质上是一个JS object。我们可以把他的selector看成放在main.js的el里。
@@ -308,8 +308,155 @@ template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模�
 - 由于DOM是对大小写是不敏感的，所以我们一般对DOM用的都是dash命名法，而不是驼峰（在用el和template的时候特明显）。
 - VueJS帮助联动dash 命名法和驼峰命名法。所以我们在script里用驼峰，在template里用dash命名法。
 - 提到ES6的实例赋值特征。
+### Scoping Component Styles
+- 每个.vue file里的style内容的作用范围都是全局的，这会造成很多冲突和不便。
+- scoped关键字可以限制style的作用范围至本.vue文件。
+- 这里稍微提到了shadow DOM。Vue + scoped的模式有些像shadow DOM。
+- 在用了scoped后，我们可以在DOM看到每个元素都有一个奇怪的data标签. 这些attribute不会与本身的的HTML元素的attribute产生冲突。
+- indeed it's using the default html data attribute which allows us to attach custom data to elements, so it's in line with a good html style.
+- div + 奇怪的attribute的模式来匹配和限制各个.vue file的style。
+## Section7
+### Communication Problems
+- 预设前置环境，data从父组件传达子组件。
+### Using Props for Parent => Child Communication
+- 这里终于引入props了。意思是property from outside。形式是以array的形式。
+- 注意不要把参数传死了(穿成string)，记得用v-bind。
+### Naming "props"
+- 同样props也可以用驼峰命名法。
+### Using "props" in the Child Component
+- 这节讲了在<script>内使用props。
+### Validating "props"
+- props的形式从array改成object。
+- 两个新关键字，default，require（注意override）。type可以多选。
+### Using Custom Events for Child => Parent Communication
+- 这节讲怎么从子组件传data到父组件。可以用客制化事件（emit event）。
+- 这里讲了一个特殊情况，就是父组件直接传参考类型下来，那我们在子组件里更改的话，父组件里也会相应地更改。（传址与传值）
+- 我们可以让父组件监听 要回传data的子组件上的 特定的事件。而子组件要做好$emit的工作。
+- 不建议用这种方法，理由在Vue的报错里。
+### Understanding Unidirectional Data Flow
+- 父组件传method给子组件A，A通过该method传data给父组件，然后父组件再将data传给子组件。
+### Communicating with Callback Functions
+- 这里提到第二种子组件回传父组件的方法，不用customer event。传一个可以操控父组件data的method到子组件，然后由子组件去弄他。
+### Communication between Sibling Components
+- customer event的操作例子，自己可以做可以做一个传method版的。这两种都必须经过父组件。
+### Using an Event Bus for Communication
+- 又点redux的味道，但是eventBus并没有hold住这些储存内容。
+### Centralizing Code in an Event Bus
+- emit method可以集中管理在eventBus里，有利于高效复用。但是监听还是在各个实例里监听。
+- 同时这个eventBus object里也可以拥有data。
+## Section9
+### Setting up the Module Project
+- 预设应用场景
+### Passing Content - The Suboptimal Solution
+- 当我们想传一堆HTML code进入子组件时，我们就会用到这个。
+### Passing Content with Slots
+- 为了达到上述要求，我们就会用到slot, which allows us to pass in data from outside and render it in the child component.
+### How Slot Content gets Compiled and Styled
+- 现在我们来搞清楚，这个从父组件被传入的code是在 父组件 还是 子组件被编译的。
+- 对于被传入的这部份代码，styling是在子组件，但是其他比如显示variable，v-if这些，是由父组件控制的。
+### Changed Slot Styling Behavior
+- 现在父组件也可以控制styling了。
+### Using Multiple Slots (Named Slots)
+- 这节讲的是 怎么在子组件分流 由父组件传下来的所有slot 的内容。
+- 关键字slot（父），name（子）。
+### Default Slots and Slot Defaults
+- 没有被分配的slot就会跑到默认的<slot>那。
+- 我们也可以为一下子组件的slot设置默认内容。当父组件传来对应的内容时，默认内容就被替代。
+### A Summary on Slots
+slot的用处。
+### Switching Multiple Components with Dynamic Components
+- 父组件如何动态地选择子组件
+- 关键字component，:is.
+### Understanding Dynamic Component Behavior
+- 我们在切换动态组件的时候，旧组件是被破坏的（destroyed）。
+### Keeping Dynamic Components Alive
+- 用keep-alive包住动态组件
+### Dynamic Component Lifecycle Hooks
+- 在用keep-alive的情况下，我们还有deactived和activated来模拟destroyed和created。
+## Section11
+### A Basic <input> Form Binding
+- v-model, 跟这个关键字绑上的的data，Vue会自动追踪他的修改源。即我们修改从input field修改，变量的值会变，我们从其他地方修改，input field的值会变。
+### Grouping Data and Pre-Populating Inputs
+### Modifying User Input with Input Modifiers
+- 介绍了几个v-model后面的modifier，lazy，trim，number
+### Binding <textarea> and Saving Line Breaks
+- 在<textarea>中留预设信息是没有用的，还是得看v-model。
+- 在<textarea>的范围中让内容回车时，<p>中显示的内容却只是一个空格。这个时候我们可以在<p>上安上一个HTML自带的style，white-space:pre来让他出现line
+break。
+### Using Checkboxes and Saving Data in Arrays
+- 这里的应用场景是我们想把checkbox的每个选项都装在Vue data property的一个array里。
+- 首先这个data property必须是一个array，然后我们在checkbox（input tag）上用v-model绑在同一个data property上，这样Vue就会自动帮我们追踪。
+### Using Radio Buttons
+- 对于radio button，只要你用v-model把他们绑在同一个data property上，那么Vue就明白这组radio button里只能选一个。并且会切换到选中的值。
+### Handling Dropdowns with <select> and <option>
+- <option>可善用v-for铺开。<option>自带默认选项关键字selected，把对应的选项的selected设成true就行（如selected='...true的条件'）。
+- 我们依然用v-model来绑定data中相对应的property。要注意的是，如果该property已经有值了，那他会覆盖selected的默认选项（即这也是一种默认设置法）。
+### What v-model does and How to Create a Custom Control
+- 这节讲了v-model的本质就是用value去显示数据，用@input去监听数据变化以及实时修改数据。
+### Creating a Custom Control (Input)
+- 这节讲的是自己怎么客制化一个和v-model配合的component
 
+### Submitting a Form
   
+## Section12
+### Understanding Directives
+- 先介绍了几个内置的directives。v-这个东西是告诉vue，这attribute是自己人。
+- 注意，在用v-html的时候，Be careful when using this directive, you should sanitize your output to make sure you're not getting a victim of 
+  cross-site scripting attacks because you can output html code there and that of course could also be malicious script tags.
+- 如果我们想要所有的组件都能用到该directives的话，我们在main.js中注册directive（globally）, 第一个参数就是该directive的名字.
+### How Directives Work - Hook Functions
+- directives也像compnents那样有生命周期。
+- 第一个遭遇到的就是bind(). 当我们将directive绑在元素上时就会触发它。三个参数，el是我们绑定的对象元素，binding是一些传入参数，vnode与virtual DOM有关，但很少用。对于
+  后两个参数，我们一般只读不改（something you should not change at runtime）。
+- inserted. 当元素被inserted入DOM时触发。我们比较少用。
+- update。当本身update而他的children未update时触发。这里有新旧两个virtual DOM。
+- componentUpdate.当children也被update完之后。
+- unbind. 当该directive被移除的时候。
+### Creating a Simple Directive
+- 如何使用directive的bind给component上色
+### Passing Values to Custom Directives
+### Passing Arguments to Custom Directives
+- arg的用法和value有点像，就是用:号绑定。
+- 这里我们实现的需求是用户可以根据binding重的arg输出。
+### Modifying a Custom Directive with Modifiers
+- 这节讲了怎么自制modifier。如果有加载这个modifier的话，modifier array相应的部分就会变true。
+### Custom Directives - A Summary
+### Registering Directives Locally
+- 如果我们仅想要在某个特定的组件里使用directive的话，我们可以在组件里设置，和component道理一样。
+### Using Multiple Modifiers
+- 这节讲了怎么使用和定义多个modifier。
+- modifiers可chain。
+### Passing more Complex Values to Directives
+- 对于directive的value部分，我们不仅可以传string，也可以传object，好好使用。
+## Section13
+### Module Introduction
+### Creating a Local Filter
+- filter都是自己做的，没有原生的。
+- filter的作用往往只是转换一下data在template里的显示形式，而不是改变资料自己本身。
+- filter的关键字的位置和components他们是同一个级别。同理filter也可以globally地注册（Vue.filter）。
+- 每个tilter都有它的输入。通常在使用的时候，输入都是他的 | 号前面的那个输出。
+### Global Filters and How to Chain Multiple Filters
+- filter可以组成filter chain。就是前面的结果传给后面。
+### An (often-times better) Alternative to Filters: Computed Properties
+- 这里lecturer举了个例子，当我们要用filter去过滤一个list的时候（比如<li>），一旦页面发生re-render，Vue就会跑去对他们进行重新计算，
+  这极大的耗费了效能。
+- 在这种情况下，我们在computed中实现filter才是较好的选择，而在仅在<li>中展示被computed过滤之后的数据。
+### Understanding Mixins
+- Lecturer在这里举了一个filter重复的例子。比如local filter，我们可能会在不同的组件中需要用到同样的过滤器（computed的那种版本）。
+这个时候就会造成代码冗余。这个时候我们就会需要Mixin。
+### Creating and Using Mixins
+- mixin的形式是array。它本质上是一个object形式的代码，但是可以填充到我们Vue instance的部分。
+- 牛逼的地方是，mixin还能与我们原文件中现有的代码merge成新的组件。
+### How Mixins get Merged
+- 这节讲了Mixin的生命周期作用原理，如果Mixin中的代码和Mixin所嵌入的文件中都有created这个lifecycle hook，那么Mixin中的那个会先执行，
+原文件中的后执行。这是为了确保原文件中的lifecycle hook可以覆盖掉mixin的内容。
+### Creating a Global Mixin (Special Case!)
+- 这里提到了当我们想要把某个mixin插入到所有的组件中时，我们就得注册一个全局的mixin。
+- 注意，在main.js中的new Vue本身也是一个 组件/Vue instance 所以他也有自己的生命周期函数。
+- 全局Mixin重的生命周期函数执行顺序是最高的。但也是最易被覆盖的。
+### Mixins and Scope
+- Mixin中的代码相当于直接插入对应的Vue instance。他们之间不会互相影响。即修改一个mixin的内容不会对其他使用该mixin的组件造成影响。
+- 如果你想造成影响的话，eventBus或者直接引入一个JS object或许是个方案。
 
   
 
