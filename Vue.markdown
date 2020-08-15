@@ -457,9 +457,168 @@ break。
 ### Mixins and Scope
 - Mixin中的代码相当于直接插入对应的Vue instance。他们之间不会互相影响。即修改一个mixin的内容不会对其他使用该mixin的组件造成影响。
 - 如果你想造成影响的话，eventBus或者直接引入一个JS object或许是个方案。
+## Section15
+### Accessing Http via vue-resource - Setup
+- 从terminal里安装东西时，--save就装到production dependency里了。
+- 使用Vue.use来引入plugins。
+## Section16
+### Module Introduction
+提到了SPA
+### Setting up the VueJS Router (vue-router)
+### Setting Up and Loading Routes
+- 一般一个项目就一个router instance，不然会出问题，我们可以在main.js配置他，也可以新开一个file来配置。
+- 配置好了routes后，我们把它传入本项目的router，再把router挂在在根组件上。
+- router-view是组建切换的地方。
+- Vue-router默认的router是hashtag的模式。可以更改。
+### Understanding Routing Modes (Hash vs History)
+- 浏览器默认行为，当我们在地址栏按enter键时，浏览器会向服务器发request。我们就想要避免这种默认行为，在本地handle url的变化。
+- 每次改变url时，服务器永远返回给我们index.html，而我们在本地handle后面的东西（/user）。这种模式会让服务端的逻辑轻松很多。
+- 这节再看看
+### Navigating with Router Links
+- <a>中的href也会给server发送request。VueJS的替代品是router-link
+### Where am I? - Styling Active Links
+- ？？？
+- exact关键字解决一个两个按钮同时active的问题。因为Vue判断哪个link被匹配是通过url的，而home页面的url被user的包含，所以也被匹配，exact则取消
+  这种包含关系。
+### Navigating from Code (Imperative Navigation)
+- 这节我们想通过JS转到某个页面。
+- push?
+### Setting Up Route Parameters
+- 这节讲怎么通过url传参，关键符号是:.
+### Fetching and Using Route Parameters
+- 讲怎么获取和操做params，$route可以access router。
+### Reacting to Changes in Route Parameters
+- 这里结揭示一个问题，同url但是params不同的情况下，相应的component不会re-created。这就会造成某些数据不能即使更新。
+- $route为啥不要 + this或者为啥要 + this？组件是怎么触发re-render？
+- 这里再次提示了computed和watch的不同，前者具有缓存特征，后者则是单纯的callBack function. 这里用computed或者watch都行。
 
-  
+修改什么出发re-render，
+### Setting Up Child Routes (Nested Routes)
+- 这里的lecturer指出了，实际开发的情况都不怎么会hardcode这些routes的跳转按钮的。
+- 我们这节还要implement一些child route（nested route）。我们可以在routes那里配置他。关键字是children。注意child routes的path是遵守之前我们提到的路径定于规则的。
+这里我们不加/，这节贴在/User的后面。
+- 注意，对于nested routes。我们的router-view应该放在父组件的下面。
+### Navigating to Nested Routes
+- 这里有个点是我们不需要watch $route.params.id 的变化。因为无论如何我们都要退回到上一层，然后再次通过link来看各个component的输出。这种情况下，组件肯定是会被re-render的。
+### Making Router Links more Dynamic
+- 动态地使用$route.params.id作为url。
+### A Better Way of Creating Links - With Named Routes
+- 有的时候<router-link>的to path内容特别长的话，我们可以用name property来修饰它。
+- 首先要在routes里设置好name。然后以object的property的形式传入router-link。同时，我们还可以传入params这些东西（params这块刚好填充router-link的to link中需要的参数）。 
+### Using Query Parameters
+- 这个Query的用法和params差不多。但是放在URL的最后面。是一个可选项。由.query提取，query是object的形式。
+### Multiple Router Views (Named Router Views)
+- 这里讲到了router-view如何根据name布局。
+### Redirecting
+- 单一地址重定向。
+### Setting Up "Catch All" Routes / Wildcards
+- *全地址速配符。
+### Animating Route Transitions
+- 要看做动画的那节。？？
+### Passing the Hash Fragment
+- #data的行为？default
+- 这里我们可以通过:to property来把hash加入要转到的url里（hash关键字），但问题是我们并没有看到跳转的效果。
+### Controlling the Scroll Behavior
+- router有个专门管scroll position的函数。
+- 你可以通过调整（return）坐标来跳到你下一个要到的页面的位置。
+- 或者通过return selector来跳到某个元素的位置。
+- 或者可以通过savedPosition跳到走之前的位置(浏览器前进后退的时候)。
+### Protecting Routes with Guards
+### Using the "beforeEnter" Guard
+- 对于check user是否能跳转入的guards，我们有三种。
+- 一是在main.js里放置beforeEach。这个method会check整个项目的每一次路由跳转。
+- 在该method中，next函数是可以让这次跳转成功的关键。并且可以改变跳转的路径。如果next中放一个false的话，则表示不允许跳转。
+- 第二点是在routes里，粒度更小，beforeEnter。
+- 第三点是component level。vue-router有个类似lifecycle hook的函数，beforeRouteEnter()
+- 在next()的外面，我们是无法access该instance的内容的（如this.link）。因为该instance还没有确认loaded。我们只能以这种方式access和操作他的property, 
+  next(vm => vm.link); 在这个next()外面，我们可以做一些authentication check，看看用户是否有资格 next.
+### Using the "beforeLeave" Guard
+- 这节讲的是离开组件时的route检查。只有一个组件级的guard。beforeRouteLeave。毕竟全局的话，再check也已经来不及了。
+### Loading Routes Lazily
+- 一般情况下，我们用webpack打包出来的东西都是一个大的JS file。
+- Vue的lazy loading就是语法比较奇怪一点。
+- require的第一个参数是我们想要加载的file。第二个arrow function是一个异步函数。require本身是一个同步及时的import函数 ？？
+- 当我们想要将多个bundle变成一个大bundle时，我们只要用一个名称把这些lazy loading绑起来就好。
+## Section17
+### Why a Different State Management May Be Needed
+- eventBus会引出两个问题，一是emit大量的事件，而是我们很难追踪修改（谁改了谁）。
 
+- 这节讲了怎么初始化一个store，以及怎么存取，操作他。
+### Why a Centralized State Alone Won't Fix It
+- 这里描述的问题是，当我们在不同的组件中对某个store中的property做同一个计算流程时，这种行为很损效能
+### Understanding Getters
+- 这个时候，getter就出来了。我们可以吧这个计算流程放到getter里，然后由getter return这个结果。
+### Using Getters
+我们可以有各种各样的getters
+### Mapping Getters to Properties
+- 这节指出一个问题，如果getters多的话，代码会变得非常冗余，这个时候我们就需要mapGetters。mapGettters返回的是一个object，刚好match computed。
+- 那么这个时候问题又来了，mapGetters占用了整个computed，我们无法放置自己的computed进来。
+- 那么我们就需要用ES6的...符号把mapGetters拆解开，并配合我们自己的computed properties。
+- 新的问题又来了，compiler无法识别..., 这个时候我们再装个babel就好。
+### Understanding Mutations
+- 与getter对应的是mutation。当有一个component通过mutation改了某个property后，所有监听该property的组件都会收到更新消息。
+### Using Mutations
+- 像操作getter一样操作mutations。
+### Why Mutations have to run Synchronously
+- 现在要想办法异步更新state了。Mutation中只能执行同步的东西。
+### How Actions improve Mutations
+- 在component trigger和mutation更变store之间，我们会放一个actions来run异步代码。然后由actions来触发mutation。
+### Using Actions
+- 我们可以把在actions里传进来的object拆解掉。只用我们要用的部分。??
+- 同步任务的话，还是直接使用mutation的mapMutation，异步的话才使用actions。
+- actions有对应的mapActions。
+### Mapping Actions to Methods
+- 这节讲了怎么往actions和mutation里传参数。
+### A Summary of Vuex
+复习
+### Two-Way-Binding (v-model) and Vuex
+- 这节讲的是解决Vuex的two-way binding的问题。
+- 我们想要对store里的property做two-way binding。
+- 第一种办法是建立一个dispatch method。然后把input拆解成value（显示值）和input（监听值，并call method）。
+- 第二种办法可以用v-model. 我们要在computed中以object的形式定义某个property。然后这个property有get和set两个method。
+get就是取值的那个menthod，set则是设置值的method。用到这种method和property形式的情况极其少见。
+### Improving Folder Structures
+### Modularizing the State Management
+- 这里指出了，对于counter，他的getter，actions等操作是一套，我们可以把它放到一个file中。对于value，他也有自己的一套东西。我们可以把他的也独立出来。
+- 用modules关键字在store中引入。
+### Using Separate Files
+- 这里又提出了一个新的情况。当某个复杂的actions或getter属于不同的module时，我们该怎么把它提取出来。
+- 新的import方法。
+### Using Namespaces to Avoid Naming Problems
+- 这里提到了众多actions，getters名字重复的问题。
+- 我们通常会把它们的命名统一到一个file里。这样如果file中export的名字冲突的话，马上就会报错。
+- 注意output的名字要全大写。
+### Auto-namespacing with Vuex 2.1
+- 这里提到了自动给予不同的module不同的命名空间的事，还不是太懂，可以再看看。？
+## Section22
+### Project Setup
+- 设置了一下firebase。
+### Axios Setup
+- 设置了一下Axios
+### Sending a POST Request
+- post, if we plan on essentially creating an array of data on the backend, put if we just want to write one object.？
+- 一般来说axios.post接受两个参数，url + 发送的内容。
+- axios will automatically stringfy data.
+### Sending a GET Request
+### Accessing & Using Response Data
+讲的是去了data后怎么操作
+### Setting a Global Request Configuration
+- 这节讲的是怎么为项目的axios配置一些全局的设置。比如默认url，默认headers这些的。
+- 如果我们要配置的东西少的话，我们就直接在main.js里配置，多的话就另开一个新文件。
+### Using Interceptors
+- 像是项目的http过滤器，我们可以在发出和接收的时候做一些配置，弄弄header什么的。
+- 记住一定要return。
+### Custom Axios Instances
+- 如果你的项目只和一个url进行HTTP交互的话，那么我们用一个axios instance就足够了。如果你要和多个url进行互动，那么就可以create多个axios的
+  instance，并自己进行配置, 包括baseURL，header什么的。
+### Understanding "Centralized State"
+- Vuex就和Redux差不多，也是在一个separate file中维护一个全局变量（store），然后各个component修改或读取他。
+
+
+组件重新渲染？
+lazyloading 官方文档不可用
+Vuex真有dispatch吗？
+Vuex也不能trace啊？
 
 
 
