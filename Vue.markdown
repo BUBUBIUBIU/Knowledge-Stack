@@ -616,7 +616,7 @@ get就是取值的那个menthod，set则是设置值的method。用到这种meth
 
 
 组件重新渲染？
-lazyloading 官方文档不可用
+lazyloading 官方文档不可用 (动态引入还是错的)
 Vuex真有dispatch吗？
 Vuex也不能trace啊？
 
