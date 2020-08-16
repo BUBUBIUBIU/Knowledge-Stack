@@ -538,7 +538,7 @@ break。
 ### Loading Routes Lazily
 - 一般情况下，我们用webpack打包出来的东西都是一个大的JS file。
 - Vue的lazy loading就是语法比较奇怪一点。
-- require的第一个参数是我们想要加载的file。第二个arrow function是一个异步函数。require本身是一个同步及时的import函数 ？？
+- require的第一个参数是我们想要加载的file。第二个arrow function是一个异步函数。require本身是一个同步及时的import函数. 现在有新语法了，可以再研究一下。（待看）
 - 当我们想要将多个bundle变成一个大bundle时，我们只要用一个名称把这些lazy loading绑起来就好。
 ## Section17
 ### Why a Different State Management May Be Needed
@@ -661,8 +661,6 @@ get就是取值的那个menthod，set则是设置值的method。用到这种meth
 - Vue.component就是注册全局组件。而Vue.use则是注册插件。插件（plugin）本质上是一个对象。其中含有一个install方法，而Vue.use就会调用这个方法。
 - 这个方法中不仅有注册组件（Vue.component），还有Vue.directive(), Vue.mixin()等。可以说是包含了Vue.component。
 
-
-lazyloading 官方文档不可用 (动态引入还是错的) 大坑
 
 Vuex真有dispatch吗？
 
