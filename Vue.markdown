@@ -468,7 +468,7 @@ break。
 ### Setting Up and Loading Routes
 - 一般一个项目就一个router instance，不然会出问题，我们可以在main.js配置他，也可以新开一个file来配置。
 - 配置好了routes后，我们把它传入本项目的router，再把router挂在在根组件上。
-- router-view是组建切换的地方。
+- router-view是组件切换的地方。
 - Vue-router默认的router是hashtag的模式。可以更改。
 ### Understanding Routing Modes (Hash vs History)
 - 浏览器默认行为，当我们在地址栏按enter键时，浏览器会向服务器发request。我们就想要避免这种默认行为，在本地handle url的变化。
@@ -489,10 +489,11 @@ break。
 - 讲怎么获取和操做params，$route可以access router。
 ### Reacting to Changes in Route Parameters
 - 这里结揭示一个问题，同url但是params不同的情况下，相应的component不会re-created。这就会造成某些数据不能即使更新。
-- $route为啥不要 + this或者为啥要 + this？组件是怎么触发re-render？
+- 这是因为我们并没有改动data本身。即我们把$route中的某个值赋给data的id，但我们只是传值而已。所以$route被改变时，组件不会re-render。
+- $route前面加不加this是取决于他在script中的位置的。如果他在data里的话就加。如果他只是在watch中处于一个被监听的对象，就不加。
 - 这里再次提示了computed和watch的不同，前者具有缓存特征，后者则是单纯的callBack function. 这里用computed或者watch都行。
-
-修改什么出发re-render，
+### vue-router 2.2: Extract Route Params via "props"
+- 这里提供的一种新特性是将$route的params绑在props上传下去，这样组件就会随着params的更变而re-render（三种方法）。
 ### Setting Up Child Routes (Nested Routes)
 - 这里的lecturer指出了，实际开发的情况都不怎么会hardcode这些routes的跳转按钮的。
 - 我们这节还要implement一些child route（nested route）。我们可以在routes那里配置他。关键字是children。注意child routes的path是遵守之前我们提到的路径定于规则的。
@@ -613,11 +614,58 @@ get就是取值的那个menthod，set则是设置值的method。用到这种meth
   instance，并自己进行配置, 包括baseURL，header什么的。
 ### Understanding "Centralized State"
 - Vuex就和Redux差不多，也是在一个separate file中维护一个全局变量（store），然后各个component修改或读取他。
+## Section 25
+### Module Introduction
+- vue create = vue init. 可以有preset和Custom config（客制化配置）两种模式。
+- 在旧版Vue中，一旦你配置好项目后，就很难更改他（得去webpack的配置文件里改）。但是CLI3后的Vue可以轻松做到。（Vue add @vue/plugin-name）
+### Creating a Project
+- vue init在装了cli3后失效。vue create. 然后一顿设置。
+- 在user folder里，我们可以看到一个.userc的隐藏文件。这个文件里我们可以看到我们之前对Vue做的种种设置。
+### Analyzing the Created Project
+- package.json的三块内容，dependency，devDependency，script。
+- 在Vue-cli3之后的版本，webpack.config file不见了。
+- 最后还有一个browserlist内容，这块指明你的web项目所服务的浏览器范围。
+- 后面有些内容没记？？
+### Using Plugins
+- 插件（plugins）要遵循一些命名规则。
+- vue的plugin通常是 vue-cli-pluin-名字。官方的前面都加一个@符号。
+- 得益于这个命名标准，我们添加plugin的时候就vue add plugin名字就好。
+### CSS Pre-Processors
+- 现场演示了一下怎么加CSS preprocessor的。
+### Environment Variables
+- 环境变量通常是整个项目都要用得到的。比如aip key，url，对于test环境或者其他环境。
+- 我们通常把这些环境变量存在目录的最上级（和src同一级）。以.env命名这个文件。Vue会自动读取他。
+- 在使用这些变量的时候，我们在JS code里要加process.env.xxxx这样。
+- 对于三种不同的模式（mode为development，production，test），我们可以用不同的file来定义这些环境变量. 只要在.env后面加.development等就行。
+- 变量命名也有讲究，必须要以VUE_APP_开头。不然Vue识别不了。
+### Building the Project
+讲了以不同的的mode build项目
+### Instant Prototyping
+- 先讲了一下我们可以让vue-cli-service全局化，但是要-g安装。这样我们就可以在文件夹外build或dev东西了。
+- 另一个是instance prototyping. 前一个功能可以让我们在在任意一个位置run vue-cli-service，那么我们可以直接vue run xxx.vue，直接在浏览器里看这个组件。
+- 当然，如果这个组件对其他组件有很强的依赖的话，会产生麻烦。
+### Different Build Targets
+- 三种build的模式，甚至可以进行组件级build，目前用不太到。？？
+### Using the "Old" CLI Templates (vue init)
+- 这节讲的是怎么让Vue2的init指令复活。我们只需要在全局中装@vue/init-cli就好。剩下的操作和Vue2一摸一样。
+### Using the Graphical User Interface (GUI)
+- 图形化界面，太屌了。
+### Alternative Lazy Loading Syntax
+- 就是更变语法的那个点。
+
+## 其他
+### 什么会触发Vue组件的re-render
+- data属性的更变会引发re-render，props更新（本质上是data的更新）。
+- 注意Vue无法动态地追踪数组和对象的变动（比如通过index改变数组内容等）。文档里有相应的解决方案。
+### Vue.use与Vue.component
+- Vue.component就是注册全局组件。而Vue.use则是注册插件。插件（plugin）本质上是一个对象。其中含有一个install方法，而Vue.use就会调用这个方法。
+- 这个方法中不仅有注册组件（Vue.component），还有Vue.directive(), Vue.mixin()等。可以说是包含了Vue.component。
 
 
-组件重新渲染？
-lazyloading 官方文档不可用 (动态引入还是错的)
+lazyloading 官方文档不可用 (动态引入还是错的) 大坑
+
 Vuex真有dispatch吗？
+
 Vuex也不能trace啊？
 
 
