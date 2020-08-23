@@ -373,6 +373,7 @@ slot的用处。
 - 用keep-alive包住动态组件
 ### Dynamic Component Lifecycle Hooks
 - 在用keep-alive的情况下，我们还有deactived和activated来模拟destroyed和created。
+
 ## Section11
 ### A Basic <input> Form Binding
 - v-model, 跟这个关键字绑上的的data，Vue会自动追踪他的修改源。即我们修改从input field修改，变量的值会变，我们从其他地方修改，input field的值会变。
@@ -394,10 +395,17 @@ break。
 ### What v-model does and How to Create a Custom Control
 - 这节讲了v-model的本质就是用value去显示数据，用@input去监听数据变化以及实时修改数据。
 ### Creating a Custom Control (Input)
-- 这节讲的是自己怎么客制化一个和v-model配合的component
-
+- 这节讲的是自己怎么客制化一个和v-model配合的component. 其实相当于<input>元素。
+- 关键点在于接受父组件的prop和经过事件触发后，要$emit相应的事件出去给位于父组件的v-model。
 ### Submitting a Form
-  
+- 这节讲的是如何submit form。from里面会包含很多信息。就是之前我们在网页表单里输入的那些。
+- 我们先用directive里的prevent modifier来阻止浏览器的默认发送行为。然后自己handle整个submit流程。
+### Assignment
+- 新学一招，input元素放进label元素里就不用声明for和id来匹配了
+- 注意在form里submit的时候，我们要阻止浏览器的默认行为。
+- 这里注意，在客制化的input组件中，$emit的第一个参数并不是没有意义的。应该调成input。因为在父组件中的v-model监听的就是input事件。
+- 注意，把computed当成property在使用。
+
 ## Section12
 ### Understanding Directives
 - 先介绍了几个内置的directives。v-这个东西是告诉vue，这attribute是自己人。
@@ -428,6 +436,9 @@ break。
 - modifiers可chain。
 ### Passing more Complex Values to Directives
 - 对于directive的value部分，我们不仅可以传string，也可以传object，好好使用。
+### 关于binding.arg与binding.value的用法差异
+- 前者只能用来传string类型的值，使用范围较局限，后者可以传乱七八糟的东西，用起来较广。
+
 ## Section13
 ### Module Introduction
 ### Creating a Local Filter
@@ -457,10 +468,12 @@ break。
 ### Mixins and Scope
 - Mixin中的代码相当于直接插入对应的Vue instance。他们之间不会互相影响。即修改一个mixin的内容不会对其他使用该mixin的组件造成影响。
 - 如果你想造成影响的话，eventBus或者直接引入一个JS object或许是个方案。
+
 ## Section15
 ### Accessing Http via vue-resource - Setup
 - 从terminal里安装东西时，--save就装到production dependency里了。
 - 使用Vue.use来引入plugins。
+
 ## Section16
 ### Module Introduction
 提到了SPA
