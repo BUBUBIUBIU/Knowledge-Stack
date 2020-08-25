@@ -280,6 +280,7 @@ template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模�
 ### More about ".vue" Files and the CLI
 ### Debugging VueJS Projects
 介绍了两个工具？再看看
+
 ## Section 7
 ### An Introduction to Components
 - 提了在HTML template里简单版的Vue instance复用行不通。只有第一个被挂载。
@@ -315,7 +316,8 @@ template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模�
 - 在用了scoped后，我们可以在DOM看到每个元素都有一个奇怪的data标签. 这些attribute不会与本身的的HTML元素的attribute产生冲突。
 - indeed it's using the default html data attribute which allows us to attach custom data to elements, so it's in line with a good html style.
 - div + 奇怪的attribute的模式来匹配和限制各个.vue file的style。
-## Section7
+
+## Section8
 ### Communication Problems
 - 预设前置环境，data从父组件传达子组件。
 ### Using Props for Parent => Child Communication
@@ -340,10 +342,11 @@ template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模�
 ### Communication between Sibling Components
 - customer event的操作例子，自己可以做可以做一个传method版的。这两种都必须经过父组件。
 ### Using an Event Bus for Communication
-- 又点redux的味道，但是eventBus并没有hold住这些储存内容。
+- 有点redux的味道，但是eventBus并没有hold住这些储存内容。
 ### Centralizing Code in an Event Bus
 - emit method可以集中管理在eventBus里，有利于高效复用。但是监听还是在各个实例里监听。
 - 同时这个eventBus object里也可以拥有data。
+  
 ## Section9
 ### Setting up the Module Project
 - 预设应用场景
@@ -351,6 +354,7 @@ template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模�
 - 当我们想传一堆HTML code进入子组件时，我们就会用到这个。
 ### Passing Content with Slots
 - 为了达到上述要求，我们就会用到slot, which allows us to pass in data from outside and render it in the child component.
+听
 ### How Slot Content gets Compiled and Styled
 - 现在我们来搞清楚，这个从父组件被传入的code是在 父组件 还是 子组件被编译的。
 - 对于被传入的这部份代码，styling是在子组件，但是其他比如显示variable，v-if这些，是由父组件控制的。
