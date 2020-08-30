@@ -333,6 +333,7 @@ template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模�
 ### Using Custom Events for Child => Parent Communication
 - 这节讲怎么从子组件传data到父组件。可以用客制化事件（emit event）。
 - 这里讲了一个特殊情况，就是父组件直接传参考类型下来，那我们在子组件里更改的话，父组件里也会相应地更改。（传址与传值）
+- 注意，$emit只会向上传一层。即，父组件的父组件收不到事件。
 - 我们可以让父组件监听 要回传data的子组件上的 特定的事件。而子组件要做好$emit的工作。
 - 不建议用这种方法，理由在Vue的报错里。
 ### Understanding Unidirectional Data Flow
@@ -472,6 +473,71 @@ break。
 ### Mixins and Scope
 - Mixin中的代码相当于直接插入对应的Vue instance。他们之间不会互相影响。即修改一个mixin的内容不会对其他使用该mixin的组件造成影响。
 - 如果你想造成影响的话，eventBus或者直接引入一个JS object或许是个方案。
+
+## Section14
+### Understanding Transitions
+- 一般来说，我们用v-if来控制一个元素是否render。我们可以用一个叫<transition>的元素来把它mount上DOM和unmount下来的过程做成动画。
+### Preparing Code to use Transitions
+- 注意，transition里只能放一个元素。如果你要放多个元素的话。你得保证他们是if else的关系（即一个出现，另一个消失）。
+### Setting Up a Transition
+- 不通过transition加载的动画很难通过Vue实现。
+- 这里讲了transition的动画流程。如果是嵌入的动画的话，一开始有个-enter CSS class在第一帧挂载在元素上，后面开始挂载-enter-active。
+- 同理，当元素要unmount时候，第一帧也有个-leave的frame，后面也跟着-leave-active。
+### Assigning CSS Classes for Transitions
+- 设好4个专用class，然后相对应的transition要用name来标注。
+### Creating a "Fade" Transition with the CSS Transition Property
+- 这里我们要做一个从透明到显现的一个效果，所以在开头的第一帧，我们就把opacity设成0. 注意，当第一帧过去后，-enter class会立刻被移除。
+### Creating a "Slide" Transition with the CSS Animation Property
+- 这次我们用animation。
+### Mixing Transition and Animation Properties
+- 注意，当transition和animation产生时常冲突时，Vue会默认用长的那个。但是这有时候不符合我们的预期。这个时候我们可以在transition里使用type来指明
+  我们该完整地遵循哪种动画。
+### Animating v-if and v-show
+### Setting Up an Initial (on-load) Animation
+- 这里讲的是，在我们刷新页面的时候（让动画显现的时候），怎么让元素自动启用动画效果。关键字是appear。
+### Using Different CSS Class Names
+- 这节引入了一个很牛逼的CSS动画库，animate.css。网上可以搜得到，用CDN可以装好。
+- 问题来到怎么用这些class。如果我们命名了transition的话，那么transition肯定会去style那个区域里找相对应的4个-enter, -enter-active。这样我们就只能用他的
+  class了。
+- 这个时候我们可以在transition这个element上以style的形式配置这四个（-enter之流）东西。这样我们就可以在动画恰当的时候挂载自己想要的class。
+### Using Dynamic Names and Attributes
+- 这节告诉我们，transition上的各个properties都可以被:自由bind.
+### Transitioning between Multiple Elements (Theory)
+### Transitioning between Multiple Elements (Practice)
+- 注意，在使用条件控制元素进出的时候。我们可以用v-if+v-else或者两个v-if。但是我们不能使用v-show。
+- 注意到在没有key properties标明元素的情况下，第二个warning元素直接僵硬地出现，没有fade in的动画。这是因为在
+  Vue看来，这两个一进一出的元素都是同一个元素。我只是替换内容罢了。所以这里我们需要key来标示这两个独立的元素。
+- 还有一点是，在transition中。默认是一进一出两个元素同时出现在页面中。这样看起来就没有一进一出的效果了。为了解决这个问题
+  我们得用mode关键字。属性为out-in。
+- out-in的意思是让old element先leave。新element再进去（使用enter的动画）。
+### Listening to Transition Event Hooks
+- 这节讲的是用JS操控动画的理论。从一个元素挂载到DOM到unmount下来的过程中。transition这个element会自动emit一些事件。
+  我们可以用这些事件来出发函数。从而操纵动画。
+### Understanding JavaScript Animations
+- 这里讲到了done方法。意思是当emit时间所触发的方法执行到done后。该动画就结束了。为什么要done是因为有时候这些方法里会有一些异步方法。这不利于
+  我们控制动画的进行。如果你用的是CSS的话，transition和animation自带done的效果（已指定动画时间）。
+### Excluding CSS from your Animation
+- 尽管我们在代码上都用的是JS而不是CSS。但是Vue还是会去检查那些特定的CSS class里有没有东西。这个动作会耗费一些效能。我们就把:css这个关键字绑上
+  'false' string就好。
+### Creating an Animation in JavaScript
+- 这节讲的是怎么具体设置enter和leave这两个method。注意在初始化元素的动画的时候把初始化值设置好。
+### Animating Dynamic Components
+- 这节讲的是怎么在多个components中做选择。用的是dynamic components。
+### Animating Lists with <transition-group>
+### Using <transition-group> - Preparations
+- 先不加动画，预设场景。
+### Using <transition-group> to Animate a List
+- transition-group的用法和transition一样。唯一的区别是transition不会在DOM上留下任何东西。但是transition-group会。
+  默认留下span。当然你也可以通过tag关键字来设置。
+- 这里，我们注意到一个问题。在移除element出文档流时，上面的元素并不会立刻滑下去。因为被移出的元素仍然占着文档流中的位置。
+- 这里我们引入一个新的class。xxx-move。当某个元素的位置被改变时（比如删除，添加）。这个class就会被attach上。这个class会加在包括因元素删减 而引起位置改变的元素上。
+- 我们直接在slide-move里面放一个transition。因为当一个元素的位置变动时，Vue会自动用transformX或者transformY来调整这个元素。
+  我们需要做的事就是把这个调整的过程transition化，并加一个持续时间。
+### Understanding the App
+### Creating the App
+- 就是先了解一下这个小app的整体架构
+### Adding Animations
+- 这里用自己写的CSS或者animate库的CSS都行。
 
 ## Section15
 ### Accessing Http via vue-resource - Setup
