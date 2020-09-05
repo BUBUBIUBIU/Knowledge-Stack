@@ -167,6 +167,7 @@ v-for和template的联动。这样可以复制几遍template中的内容。
 - 我们放进Vue对象的constructor里的对象参数再经过一定转化之后变成Vue的property。
 - Vue在这个过程中会监视着，看看那些properties被改变。
 - 但是如果我们在定义并宣告了该Vue对象后，我们再在外部给他加property，这个时候我们是监视不了这个外部加入的property的。
+- Vue不允许动态地添加根级别的响应式对象，但是根级别的非响应式可以。
 - 最直接的证据是，当我们把vm1 print出来后，我们看到每一个被watch的property都有对应的get和set method。而外部加入的property没有。
 ### A Closer Look at $el and $data
 - 这一节lecturer给我们说了，除了vm1.title这种access Vue对象data的方法，我们还可以用vm1.$data.title来存取。
@@ -221,7 +222,10 @@ v-for和template的联动。这样可以复制几遍template中的内容。
 ### The VueJS Instance Lifecycle in Practice
 - 这节实操怎么使用lifeCycle method。
 - 这里注意一个点，如果新旧virtual DOM是一样的话，那么vue是不会让页面被re-render的。即不会触发beforeUpdate和updated method。
+即，尽管你是响应式的属性，但是你没在页面上显示的话，你被更改后也不会出发updated方法。不是响应式属性但是出现在页面上的话也同理。如果
+你非想要对这些property有反应的话，可以设置watch方法来观察他们。
 - $destroy是Vue实例里自带的destroy method。他会断开该Vue实例对DOM的逻辑上的一切控制。
+
 ## Section6
 ### Why do we need a Development Server?
 - 我们需要将ES6转化为ES5，以保证代码能在各个浏览器中运行。
