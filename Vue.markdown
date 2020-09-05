@@ -364,9 +364,12 @@ template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模�
 ### Using Multiple Slots (Named Slots)
 - 这节讲的是 怎么在子组件分流 由父组件传下来的所有slot 的内容。
 - 关键字slot（父），name（子）。
+- 注意，named slot只能将v-slot加在template上，只有在默认scoped slot的情况下例外。
 ### Default Slots and Slot Defaults
 - 没有被分配的slot就会跑到默认的<slot>那。
 - 我们也可以为一下子组件的slot设置默认内容。当父组件传来对应的内容时，默认内容就被替代。
+### Scoped slot
+- 这是教程里没有的新内容，讲的是父组件如何从子组件中抽取数据的事。scoped slot的语法和named slot有点像。不要弄混。他用=表示。
 ### A Summary on Slots
 slot的用处。
 ### Switching Multiple Components with Dynamic Components
