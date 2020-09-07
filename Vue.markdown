@@ -152,6 +152,7 @@ v-for和template的联动。这样可以复制几遍template中的内容。
 ### Wrap Up
 - 这里讲了一下，Vue可以让我们把注意力放在JS上，尤其是逻辑部分。而不像纯JS代码一样，注重与怎么与DOM交互，怎么fetch DOM元素。
 - Vue让HTML template与JS的部分建立一种connection。
+
 ## Section5
 ### Some Basics about the VueJS Instance
 - Vue instance is a middle man between our DOM (our HTML code) and our business logic.
@@ -224,6 +225,8 @@ v-for和template的联动。这样可以复制几遍template中的内容。
 - 这里注意一个点，如果新旧virtual DOM是一样的话，那么vue是不会让页面被re-render的。即不会触发beforeUpdate和updated method。
 即，尽管你是响应式的属性，但是你没在页面上显示的话，你被更改后也不会出发updated方法。不是响应式属性但是出现在页面上的话也同理。如果
 你非想要对这些property有反应的话，可以设置watch方法来观察他们。
+- 注意，就算你操作了响应式属性，切内容出现在页面中，但是更改后内容一样，Vue也不会rerender（即不会触发updated）。
+- 如果子组件中的props被改变，然后这个props在父组件中又是响应式的，那么以父组件为根结点，整个组件树都会被updated。
 - $destroy是Vue实例里自带的destroy method。他会断开该Vue实例对DOM的逻辑上的一切控制。
 
 ## Section6
