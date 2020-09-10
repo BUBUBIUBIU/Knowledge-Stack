@@ -26,3 +26,5 @@
 - 我们可以设置多余的元素是以column的形式排列还是以row的形式排列。并且为他们加上style。
 ### Aligning Grid Items
 - 这节讲的是justify系列和align-item系列。grid相较于flex多了一个维度。注意align-self会覆盖align-items的东西。
+### Aligning Tracks
+- 这节讲的是align整条track。
