@@ -28,3 +28,16 @@
 - 这节讲的是justify系列和align-item系列。grid相较于flex多了一个维度。注意align-self会覆盖align-items的东西。
 ### Aligning Tracks
 - 这节讲的是align整条track。
+- justify管的是横向的移动，align管的是纵向的移动。
+- 有的时候元素为了遵循HTML的元素排列算法，会生成一个空洞，这个时候可以用dense关键字去填补这些空洞。
+### Using min-content, max-content and the minmax() function
+- max-content关键字放的位置和1fr一样。它的效果是可以让空间缩小到刚好放下内容的程度，并且不会break line。
+- min-content则会break line。长度取决于最长的那个单词(最小宽度值最大的那个元素的宽度值)。
+- minmax则是一个控制某一个row或者columns的属性，我们可以设置上下限。
+- 这里还提到的一个点就是，当长度或宽度设为1fr时，平时他们都是相等长度的，但是下限是能容纳自己cell里的内容。所以在view缩得很小的时候，某些columns
+或者rows的长度是不一样的。
+### Responsive Layouts with auto-fit and auto-fill
+- auto-fit和auto-fill会在很大程度上取代media query。
+- auto-fit是根据repeat里的宽度给你生成相应数量的div，但是最后那几个宽/长度为0. auto-fill则是处于填满状态。
+- auto-fit还得搭配minmax和auto-rows这些。
+
