@@ -228,6 +228,8 @@ v-for和template的联动。这样可以复制几遍template中的内容。
 - 注意，就算你操作了响应式属性，切内容出现在页面中，但是更改后内容一样，Vue也不会rerender（即不会触发updated）。
 - 如果子组件中的props被改变，然后这个props在父组件中又是响应式的，那么以父组件为根结点，整个组件树都会被updated。
 - $destroy是Vue实例里自带的destroy method。他会断开该Vue实例对DOM的逻辑上的一切控制。
+- 如果如果父组件的property传进子组件（展示在页面上），且被修改。那么父子都会更新。顺序：父beforeUpdate，子beforeUpdate, 子Updated，父Updated。
+如果只有父组件在用该属性的话，子组件不会更新。
 
 ## Section6
 ### Why do we need a Development Server?
