@@ -16,9 +16,8 @@ modifier分为两种形式存在，第一种是键值对的形式，比如我们
 第二种是boolean。它其实是第一种的特殊情况，即其值为何并不相关，重要的是其存在与否。比如disabled这个属性。
 
 ## 用BEM重新定义HTML元素
-这里我们借用一下Element-UI的form表单。  
-![Alt text](https://github.com/BUBUBIUBIU/Knowledge-Stack/blob/master/1jbsbkghewowpcixhqwbdi7q3o9bjtsfdsuc7h2i1u5aiao3xtx.png)
-大家可以看到，表单中有text-input，selector以及radio等输入型blocks。我们可以尝试着使用伪代码来解析这些blocks的构成。首先是text-input。
+这里我们借用一下Element-UI的form表单。 
+<img src="https://github.com/BUBUBIUBIU/Knowledge-Stack/blob/master/1jbsbkghewowpcixhqwbdi7q3o9bjtsfdsuc7h2i1u5aiao3xtx.png" width="500" alt="图片描述文字"/>大家可以看到，表单中有text-input，selector以及radio等输入型blocks。我们可以尝试着使用伪代码来解析这些blocks的构成。首先是text-input。
 <pre><code>Block text-input  
 Modifier multiline
 Modifier disabled
