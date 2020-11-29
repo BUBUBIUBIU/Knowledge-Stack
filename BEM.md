@@ -106,10 +106,34 @@ Modifier multiple
 注意selector和option都有disabed modifier。但是两者的作用范围是不同的，前者禁用整个block，后者仅禁用单个选项。  
 
 看了以上两个例子后，大家可以尝试着用BEM来重构checkbox，radio等HTML元素，巩固对BEM的了解。遗憾的是，HTML在实现大多数此类元素的时候都使用了`<input>`tag。同样的，在HTML4中，不同的heading由`<h1>`到`<h6>`实现。其实对于该需求我们可以用modifier来满足。随后的HTML5也在尝试着用section类的元素来调整这一情况。
+## BEM之于CSS命名规范
+CSS命名应该是BEM被应用地最频繁的地方了。这里再次使用Element-UI来做一个简单的例子。
+<img src="https://github.com/BUBUBIUBIU/Knowledge-Stack/blob/master/1illrxoxpl9f4ugxhm17njy24801ivzzwrjh2bvl0zxru4uujnm.png" width="500"/>  
+
+```
+<!-- HTML -->
+<tabs class="tabs">
+    <tab-pane class="tabs__tab-pane">用户管理</tab-pane>
+    <tab-pane class="tabs__tab-pane tabs__tab-pane_selected">配置管理</tab-pane>
+    <tab-pane class="tabs__tab-pane tabs__tab-pane_disabled">角色管理</tab-pane>
+    <tab-pane class="tabs__tab-pane">定时任务补偿</tab-pane>
+</tabs>
+```
+```
+// CSS
+.tabs {...}
+.tabs__tab-pane {...}
+.tabs__tab-pane_selected {...}
+.tabs__tab-pane_disabled {...}
+```
+### 为什么CSS会选择BEM
+* 在使用id和HTML tag名称的情况下，CSS很依赖文档结构。一旦改变文档结构，CSS也必须作出较大的变化。而BEM仅依赖class，这使得CSS与文档结构解藕，使用灵活性提高。
+* 解决了特异性的问题。举个例子。当我们想用白色当成某个表格中一般数据的背景色，黄色作为总结行的背景色时。
+```
+tabel .data { background-color: white }
+tabel .summary  { background-color: yellow }
+```
+但是在另外一个地方，我们希望用绿色来作为
 
 
 
-
-
-补充
-CSS之误会说一下
