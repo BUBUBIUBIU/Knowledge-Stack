@@ -7,6 +7,7 @@ BEM是一套基于组件的WEB开发方法论，全称为block，element以及mo
 ```
 <!-- 正确示范 -->
 <button class="submit-button"></button>
+
 <!-- 错误示范 -->
 <button class="red-button"></button>
 ```
@@ -23,16 +24,50 @@ BEM是一套基于组件的WEB开发方法论，全称为block，element以及mo
 ```
 ### Element
 * element作为block的一部分，其名字同样是具有语意和功能性的。但重要的一点是，element不能脱离block单独存在。举个例子，上图中menu和menu item就是block与element的关系，如果我们把一个menu item放menu之外，它是不具备任何意义的。element的名字的结构为block-name__element-name，由两个下划线隔开。
-* 和block一样，element之间也可以互相嵌套。
-值得注意的是，一个element不能成为另一个element的一部分。block定义了名称空间，这样保证了名称空间内的element只依赖于该block name，从而不会出现语意上的歧义。
-element不是必要的，例子：logo
-（有修改)
+```
+<!-- search-form block -->
+<form class="search-form">
+    <!-- search form里的input element -->
+    <input class="search-form__input">
+
+    <!-- search里的button element -->
+    <button class="search-form__button">Search</button>
+</form>
+```
+* 和block一样，element之间也可以互相嵌套。值得注意的是，一个element不能成为另一个element的一部分。block定义了名称空间，这样保证了名称空间内的element只依赖于该block name，从而不会出现语意上的歧义。
+```
+<!-- 正确示范 -->
+<form class="search-form">
+    <div class="search-form__content">
+        <input class="search-form__input">
+        
+        <button class="search-form__button">Search</button>
+    </div>
+</form>
+
+<!-- 错误示范 -->
+<form class="search-form">
+    <div class="search-form__content">
+        <input class="search-form__content__input">
+        
+        <button class="search-form__content__button">Search</button>
+    </div>
+</form>
+```
+* element不是必要的，比如一个logo block.
+```
+    <div class="logo">logo</div>
+```
+补充
+### Block还是Element？
+当一个组件在页面中的性质较为独立，且服用需求高的时候，它适合成为block。而对某个组件有强依附性的组件，我们可以将其定义为element。
 ### Modifier
-* 之前提到了，block和element的名字通常都是不起状态描述作用的。那么这个任务由谁来完成呢？没错，就是modifier。modifier不仅起到了状态描述的作用，还包括行为（比如某些block或element的动画的移动方向）和外表（大小，颜色等）。  
+* 之前提到了，block和element的名字通常都是不起状态描述作用的。那么这个任务由谁来完成呢？没错，就是modifier。modifier不仅起到了状态描述的作用，还包括行为（比如某些block或element的动画的移动方向）和外表（大小，颜色等）。命名规则上，modifier与element或者block以单个下划线隔开。  
 * modifier分为两种形式存在，第一种是键值对的形式，比如我们在为一个header设定大小的时候。
 ```
 <!-- size为small的header -->
 <header class="header_size_s"></header>
+
 <!-- size为medium的header -->
 <header class="header_size_m"></header>
 ```
@@ -40,10 +75,11 @@ element不是必要的，例子：logo
 ```
 <!-- 禁用状态下的button -->
 <button class="button button_disabled"></button>
+
 <!-- 启用状态下的button -->
 <button class="button"></button>
 ```
-在了解了BEM的几个主要概念后，让我们通过几个例子来加深对BEM的认识。
+在了解了BEM的几个主要概念后，让我们通过BEM来重新认识HTML。
 ## 用BEM重新定义HTML元素
 <img src="https://github.com/BUBUBIUBIU/Knowledge-Stack/blob/master/1jbsbkghewowpcixhqwbdi7q3o9bjtsfdsuc7h2i1u5aiao3xtx.png" width="500"/>  
 
