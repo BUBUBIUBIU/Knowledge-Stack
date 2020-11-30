@@ -12,7 +12,7 @@ BEM是一套基于组件的WEB开发方法论，全称为block，element以及mo
     <button class="red-button"></button>
     ```  
     
-* block可以互相嵌套，且没有嵌套层数的限制。多个block的实体可以存在于同一个页面上。
+* block可以互相嵌套，且没有嵌套层数的限制。多个block实体可以存在于同一个页面上。
     ```
     <!-- header block -->
     <header class="header">
@@ -24,14 +24,14 @@ BEM是一套基于组件的WEB开发方法论，全称为block，element以及mo
     </header>
     ```
 ### Element
-* element作为block的一部分，其名字同样是具有语意和功能性的。但重要的一点是，element不能脱离block单独存在。举个例子，上图中menu和menu item就是block与element的关系，如果我们把一个menu item放menu之外，它是不具备任何意义的。element的名字的结构为block-name__element-name，由两个下划线隔开。
+* element作为block的一部分，其名字同样是具有语意和功能性的。但重要的一点是，element不能脱离block单独存在。举个例子，上图中menu和menu item就是block与element的关系，如果我们把一个menu item放menu之外，它是不具备任何意义的。element的名字结构为block-name__element-name，由两个下划线隔开。
     ```
     <!-- search-form block -->
     <form class="search-form">
         <!-- search form里的input element -->
         <input class="search-form__input">
 
-        <!-- search里的button element -->
+        <!-- search form里的button element -->
         <button class="search-form__button">Search</button>
     </form>
     ```  
@@ -59,7 +59,7 @@ BEM是一套基于组件的WEB开发方法论，全称为block，element以及mo
     
 * element不是必要的，比如一个logo block.
     ```
-        <div class="logo">logo</div>
+    <div class="logo">logo</div>
     ```
 ### Block还是Element？
 当一个组件在页面中的性质较为独立，且复用需求高的时候，它适合成为block。而对某个组件有强依附性的组件，我们可以将其定义为element。
@@ -75,7 +75,7 @@ BEM是一套基于组件的WEB开发方法论，全称为block，element以及mo
     <header class="header_size_m"></header>
     ```  
     
-* 第二种是boolean。它其实是第一种的特殊情况，即其值为何并关键，重要的是其存在与否。比如disabled这个属性。
+* 第二种是boolean。它其实是第一种的特殊情况，即其值为何并不关键，重要的是其存在与否。比如disabled这个属性。
     ```
     <!-- 禁用状态下的button -->
     <button class="button button_disabled"></button>
@@ -87,7 +87,7 @@ BEM是一套基于组件的WEB开发方法论，全称为block，element以及mo
 ## 用BEM重新定义HTML元素
 <img src="https://github.com/BUBUBIUBIU/Knowledge-Stack/blob/master/1jbsbkghewowpcixhqwbdi7q3o9bjtsfdsuc7h2i1u5aiao3xtx.png" width="500"/>  
 
-这里我们借用一下Element-UI的form表单。大家可以看到，表单中有text-input，selector以及radio等输入型blocks。我们可以尝试着使用伪代码来解析这些blocks的构成。首先是text-input。
+这里我们借用一下Element-UI的form表单。大家可以看到，表单中有text input，selector以及radio等输入型block。我们可以尝试着使用伪代码来解析这些block的构成。首先是text input。
 ```
 Block text-input  
 Modifier multiline
@@ -95,7 +95,7 @@ Modifier disabled
   Element text-field
   Element label
 ```
-text-input的基本功能是接受文本输入，故text-filed是其必不可少的元素，而label元素（可选）则起到提示输入内容的作用。对于功能和样式繁多的Element-UI，可能还可以添加status-icon或者placeholder这种可选元素。对于text-input这个block来说，它可以处于启用或禁用状态，也可以以单行或多行来呈现输入内容，所以这两个描述block状态和外表的修饰属于modifier。  
+text input的基本功能是接受文本输入，故text filed是其必不可少的元素，而label元素（可选）则起到提示输入内容的作用。对于功能和样式繁多的Element-UI，可能还可以添加status icon或者placeholder这种可选元素。对于text input这个block来说，它可以处于启用或禁用状态，也可以以单行或多行来呈现输入内容，所以这两个描述block状态和外表的修饰属于modifier。  
 
 我们还可以再看一个比较复杂的例子，selector。
 ```
@@ -135,7 +135,7 @@ CSS命名应该是BEM被应用地最频繁的地方了。这里再次使用Eleme
 * block和element以‘__’做区隔，两者与modifier以‘_’做区隔。
 * 尽量不取冗长且无意义的名称。
 ### 为什么CSS会选择BEM
-* 在使用id和HTML tag的情况下，CSS依赖于文档结构。一旦改变文档结构，CSS也必须作出较大的变化。而BEM仅使用CSS class，这使得CSS与文档结构解藕，使用灵活性提高。  
+* 在使用id和HTML tag的情况下，CSS依赖于文档结构。一旦改变文档结构，CSS也必须作出较大的变化。而BEM仅使用CSS class，这使得CSS与文档结构解耦，使用灵活性提高。  
 
 * 解决了特异性的问题。如果开发者喜欢通过继承来处理样式需求，并且使用了HTML tag或者id，那么他很可能会遇到这个问题。举个例子。当我们想用白色当成某个表格中一般数据的背景色，黄色作为总结行的背景色时。
     ```
