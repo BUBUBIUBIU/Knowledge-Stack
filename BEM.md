@@ -1,9 +1,9 @@
 ## 什么是BEM
 BEM是一套基于组件的WEB开发方法论，全称为block，element以及modifier。它的主要思想是将WEB页面划分为各个独立的模块进行开发，消除或降低模块之间的耦合，使得代码的复用性和拓展性提高，达到优化开发体验的目的。接下来我们来看看BEM中的几个主要概念。
 ### Block
-<img src="https://github.com/BUBUBIUBIU/Knowledge-Stack/blob/master/1jbsbkghewowpcixhqwbdi7q3o9bjtsfdsuc7h2i1u5aiao3xtx.png" width="500"/>  
+<img src="https://github.com/BUBUBIUBIU/Knowledge-Stack/blob/master/1kisrp3ejch6f7sjlkhx60v36y7wr1iwpbmz44894vao7paqgwb.png" width="500"/>  
 
-* 在BEM中，block指的是在页面中具有意义且能够独立存在的实体，比如说（上图中的）button，navigation menu和logo。一个block的名称必须是独一无二且具有语意的。最好能描述该block的使用目的，比如navigation menu或submit button，而不是它的状态，比如red button。
+* 在BEM中，block指的是在页面中具有意义且能够独立存在的实体，比如说上图中的button，navigation menu和logo。一个block的名称必须是独一无二且具有语意的。最好能描述该block的使用目的，比如navigation menu或submit button，而不是它的状态，比如red button。
     ```
     <!-- 正确示范 -->
     <button class="submit-button"></button>
