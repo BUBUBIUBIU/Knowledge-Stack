@@ -152,7 +152,7 @@ tabel .summary  { background-color: yellow }
 ```
 .capitalization { text-transform: uppercase; }
 ```
-很明显，这条CSS意在将某段文案全部变为大写，而不是仅仅局限与某个block或者某个element。
+很明显，这条CSS意在将某段文案全部变为大写，而不是仅仅局限于某个block或者某个element（如果为每个需要的block和element加上`text-transform: uppercase`，会造成冗余代码）。
 * 将组件定义为block还是element对于开发者来说是一个不小的挑战。有的时候很难判断一个组件是否与包含它的block有很强的关联性，还是它恰巧在这个block的内部。这不仅要求开发者对整个系统设计有一定的了解，且该组件与block的关系还会受到页面改动的影响。
 * 随着项目的发展，BEM对开发人员的思维负担也会逐步加大，分散开发人员对业务的注意力。
 
