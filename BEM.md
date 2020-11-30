@@ -3,7 +3,7 @@ BEM是一套基于组件的WEB开发方法论，全称为block，element以及mo
 ### Block
 <img src="https://github.com/BUBUBIUBIU/Knowledge-Stack/blob/master/1kisrp3ejch6f7sjlkhx60v36y7wr1iwpbmz44894vao7paqgwb.png" width="500"/>  
 
-* 在BEM中，block指的是在页面中具有意义且能够独立存在的实体，比如说上图中的button，navigation menu和logo。一个block的名称必须是独一无二且具有语意的。最好能描述该block的使用目的，比如navigation menu或submit button，而不是它的状态，比如red button。
+* 在BEM中，block指的是在页面中具有意义且能够独立存在的实体，比如说上图中的button，navigation menu和logo。一个block的名称必须是独一无二且具有语意的。最好能描述该block的使用目的，比如navigation menu或submit button，而不是它的状态，比如red button。注意，在BEM中block，element和modifier的命名都遵循kebab-case。
     ```
     <!-- 正确示范 -->
     <button class="submit-button"></button>
@@ -36,7 +36,7 @@ BEM是一套基于组件的WEB开发方法论，全称为block，element以及mo
     </form>
     ```  
     
-* 和block一样，element之间也可以互相嵌套。值得注意的是，一个element不能成为另一个element的一部分。block定义了名称空间，这样保证了名称空间内的element只依赖于该block name，从而不会出现语意上的歧义。
+* 和block一样，element之间也可以互相嵌套。值得注意的是，一个element不能成为另一个element的一部分。block定义了名称空间，这样保证名称空间内的element只依赖于该block name，从而不会出现语意上的歧义。
     ```
     <!-- 正确示范 -->
     <form class="search-form">
