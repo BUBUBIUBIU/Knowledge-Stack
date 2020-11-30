@@ -146,6 +146,12 @@ tabel .summary  { background-color: yellow }
 }
 ```
 尽管如此，由于统一的语意，如何重新定义该CSS规则的规则都得依赖于另一个modifier。这意味这特异性依然是相同的，开发者只需注意顺序法则就好。
-
+* 页面中的各个blocks保持其样式定义的独立性，不互相产生依赖。确保block能出现在页面的其他地方，甚至是别的项目中。
+### 没有十全十美的方法
+* 尽管BEM有众多优点，但并不是任何情况都要用到它。比如一条功能性很强的CSS。
+```
+.capitalization { text-transform: uppercase; }
+```
+很明显，这条CSS意在
 
 
