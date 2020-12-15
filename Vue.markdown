@@ -331,7 +331,7 @@ template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模�
 - 预设前置环境，data从父组件传达子组件。
 ### Using Props for Parent => Child Communication
 - 这里终于引入props了。意思是property from outside。形式是以array的形式。
-- 注意不要把参数传死了(穿成string)，记得用v-bind。
+- 注意不要把参数传死了(传成string)，记得用v-bind。
 ### Naming "props"
 - 同样props也可以用驼峰命名法。
 ### Using "props" in the Child Component
